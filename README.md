@@ -56,7 +56,7 @@ jiraupdater update --endpoint "http://localhost:2990/jira" --username mysecretus
 or
 
 ```
-jiraupdater update --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueid TP1-1 --comment "Bugs Bunny is funny."
+jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueid TP1-1 --comment "Bugs Bunny is funny."
 ```
 ##### Security
 
@@ -96,7 +96,7 @@ Then build the Xcode project with the `jiraupdater` build scheme. In the build p
 
 ## JiraToolsKit
 
-JiraToolsKit is a macOS and iOS framework (written in swift) to communicate with the JIRA API. The command line jiraupdater uses the JiraToolsKit framework to communicate with JIRA. It is small and lightweight. It is in no way meant to be 100% complete towards the `JIRA` API - their API is **huge** - pull requests appreciated :)
+JiraToolsKit is a macOS framework (written in swift) to communicate with the JIRA API. The command line jiraupdater uses the JiraToolsKit framework to communicate with JIRA. It is small and lightweight. It is in no way meant to be 100% **complete** towards the `JIRA` API - their API is **huge** - pull requests appreciated :)
 
 
 ### License
