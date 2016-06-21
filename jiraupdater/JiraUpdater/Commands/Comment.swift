@@ -73,7 +73,7 @@ public struct CommentCommand: CommandType {
                 && !options.password.isEmpty
                 && !options.comment.isEmpty
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: EndPoint, username, password, Ticket ID and Comment are required"))
+                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and comment are required"))
         }
         
         let runLoop = CFRunLoopGetCurrent()
