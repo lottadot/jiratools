@@ -4,7 +4,4 @@
    <FileRef
       location = "group:jiraupdater/jiraupdater.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:JiraToolsKit/JiraToolsKit.xcodeproj">
-   </FileRef>
 </Workspace>

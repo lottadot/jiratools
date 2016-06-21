@@ -94,14 +94,9 @@ open JiraTools.xcworkspace
 
 Then build the Xcode project with the `jiraupdater` build scheme. In the build products directory in your Derived Data you'll find the `jiraupdater` command line app.
 
-## JiraToolsKit
-
-JiraToolsKit is a macOS framework (written in swift) to communicate with the JIRA API. The command line jiraupdater uses the JiraToolsKit framework to communicate with JIRA. It is small and lightweight. It is in no way meant to be 100% **complete** towards the `JIRA` API - their API is **huge** - pull requests appreciated :)
-
-
 ### License
 
-JiraUpdateTool And JiraToolksKit is released under the MIT License.
+JiraUpdateTool is released under the MIT License.
 
 ### Copyright
 

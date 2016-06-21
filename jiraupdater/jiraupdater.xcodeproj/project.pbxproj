@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34052B531D195B5E003ED8D8 /* JiraToolsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; };
+		34052B541D195B5E003ED8D8 /* JiraToolsKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34052B561D195B70003ED8D8 /* JiraToolsKit.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */; };
 		9C4653A41D12300C00EBDC98 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4653A21D12300C00EBDC98 /* MainMenu.xib */; };
 		9C4653AF1D12300C00EBDC98 /* jiraupdaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653AE1D12300C00EBDC98 /* jiraupdaterTests.swift */; };
-		9C4653C51D12307A00EBDC98 /* JiraToolsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653C01D12306500EBDC98 /* JiraToolsKit.framework */; };
-		9C4653C61D12307A00EBDC98 /* JiraToolsKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653C01D12306500EBDC98 /* JiraToolsKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C4653D01D12309100EBDC98 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; };
 		9C4653D31D12309B00EBDC98 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C4653D71D1230DE00EBDC98 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; };
@@ -34,34 +35,6 @@
 			remoteGlobalIDString = 9C46539A1D12300C00EBDC98;
 			remoteInfo = jiraupdater;
 		};
-		9C4653BF1D12306500EBDC98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9C1B50201D0F3F3200A1859A;
-			remoteInfo = JiraToolsKit;
-		};
-		9C4653C11D12306500EBDC98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9C1B502A1D0F3F3200A1859A;
-			remoteInfo = JiraToolsKitTests;
-		};
-		9C4653C31D12307100EBDC98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 9C1B501F1D0F3F3200A1859A;
-			remoteInfo = JiraToolsKit;
-		};
-		9C4653C71D12307A00EBDC98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 9C1B501F1D0F3F3200A1859A;
-			remoteInfo = JiraToolsKit;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,7 +46,7 @@
 			files = (
 				9C6336C51D12383800EE38DA /* Commandant.framework in Embed Frameworks */,
 				9C4653D31D12309B00EBDC98 /* Result.framework in Embed Frameworks */,
-				9C4653C61D12307A00EBDC98 /* JiraToolsKit.framework in Embed Frameworks */,
+				34052B541D195B5E003ED8D8 /* JiraToolsKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +67,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JiraToolsKit.framework; path = ../Carthage/Build/Mac/JiraToolsKit.framework; sourceTree = "<group>"; };
+		34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = JiraToolsKit.framework.dSYM; path = ../Carthage/Build/Mac/JiraToolsKit.framework.dSYM; sourceTree = "<group>"; };
 		9C46539B1D12300C00EBDC98 /* jiraupdater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jiraupdater.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C46539E1D12300C00EBDC98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C4653A01D12300C00EBDC98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -102,7 +77,6 @@
 		9C4653AA1D12300C00EBDC98 /* jiraupdaterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jiraupdaterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C4653AE1D12300C00EBDC98 /* jiraupdaterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jiraupdaterTests.swift; sourceTree = "<group>"; };
 		9C4653B01D12300C00EBDC98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JiraToolsKit.xcodeproj; path = ../JiraToolsKit/JiraToolsKit.xcodeproj; sourceTree = "<group>"; };
 		9C4653CA1D12309000EBDC98 /* Commandant.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Commandant.framework; path = ../Carthage/Build/Mac/Commandant.framework; sourceTree = "<group>"; };
 		9C4653CB1D12309000EBDC98 /* Commandant.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Commandant.framework.dSYM; path = ../Carthage/Build/Mac/Commandant.framework.dSYM; sourceTree = "<group>"; };
 		9C4653CC1D12309000EBDC98 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = ../Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
@@ -121,7 +95,7 @@
 			files = (
 				9C6336C41D12383800EE38DA /* Commandant.framework in Frameworks */,
 				9C4653D01D12309100EBDC98 /* Result.framework in Frameworks */,
-				9C4653C51D12307A00EBDC98 /* JiraToolsKit.framework in Frameworks */,
+				34052B531D195B5E003ED8D8 /* JiraToolsKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,22 +156,14 @@
 		9C4653B91D12305300EBDC98 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */,
+				34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */,
 				9C4653CA1D12309000EBDC98 /* Commandant.framework */,
 				9C4653CB1D12309000EBDC98 /* Commandant.framework.dSYM */,
 				9C4653CC1D12309000EBDC98 /* Result.framework */,
 				9C4653CD1D12309100EBDC98 /* Result.framework.dSYM */,
-				9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */,
 			);
 			name = frameworks;
-			sourceTree = "<group>";
-		};
-		9C4653BB1D12306500EBDC98 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C4653C01D12306500EBDC98 /* JiraToolsKit.framework */,
-				9C4653C21D12306500EBDC98 /* JiraToolsKitTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,8 +184,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9C4653C41D12307100EBDC98 /* PBXTargetDependency */,
-				9C4653C81D12307A00EBDC98 /* PBXTargetDependency */,
 			);
 			name = jiraupdater;
 			productName = jiraupdater;
@@ -274,12 +238,6 @@
 			mainGroup = 9C4653921D12300C00EBDC98;
 			productRefGroup = 9C46539C1D12300C00EBDC98 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 9C4653BB1D12306500EBDC98 /* Products */;
-					ProjectRef = 9C4653BA1D12306500EBDC98 /* JiraToolsKit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				9C46539A1D12300C00EBDC98 /* jiraupdater */,
@@ -288,29 +246,13 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		9C4653C01D12306500EBDC98 /* JiraToolsKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = JiraToolsKit.framework;
-			remoteRef = 9C4653BF1D12306500EBDC98 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C4653C21D12306500EBDC98 /* JiraToolsKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JiraToolsKitTests.xctest;
-			remoteRef = 9C4653C11D12306500EBDC98 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		9C4653991D12300C00EBDC98 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9C4653A41D12300C00EBDC98 /* MainMenu.xib in Resources */,
+				34052B561D195B70003ED8D8 /* JiraToolsKit.framework.dSYM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,16 +326,6 @@
 			isa = PBXTargetDependency;
 			target = 9C46539A1D12300C00EBDC98 /* jiraupdater */;
 			targetProxy = 9C4653AB1D12300C00EBDC98 /* PBXContainerItemProxy */;
-		};
-		9C4653C41D12307100EBDC98 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JiraToolsKit;
-			targetProxy = 9C4653C31D12307100EBDC98 /* PBXContainerItemProxy */;
-		};
-		9C4653C81D12307A00EBDC98 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JiraToolsKit;
-			targetProxy = 9C4653C71D12307A00EBDC98 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -497,7 +429,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -516,7 +447,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
