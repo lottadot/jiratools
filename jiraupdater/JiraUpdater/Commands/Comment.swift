@@ -41,9 +41,10 @@ public struct CommentCommand: CommandType {
         
         public static func evaluate(m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
             
-            let endPointDefault = NSProcessInfo().environment["JIRAUPDATER_ENDPOINT"] ?? ""
-            let userDefault = NSProcessInfo().environment["JIRAUPDATER_USERNAME"] ?? ""
-            let passwordDefault = NSProcessInfo().environment["JIRAUPDATER_PASSWORD"] ?? ""
+            let env = NSProcessInfo().environment
+            let endPointDefault = env["JIRAUPDATER_ENDPOINT"] ?? ""
+            let userDefault = env["JIRAUPDATER_USERNAME"] ?? ""
+            let passwordDefault = env["JIRAUPDATER_PASSWORD"] ?? ""
             
             return create
                 <*> m <| Option(key: "endpoint", defaultValue: endPointDefault,
