@@ -17,6 +17,8 @@
 		9C4653D71D1230DE00EBDC98 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; };
 		9C4653DB1D12329000EBDC98 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653D91D12329000EBDC98 /* Errors.swift */; };
 		9C4653DC1D12329000EBDC98 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653DA1D12329000EBDC98 /* main.swift */; };
+		9C5A2D641D19BDAD00B27310 /* JiraToolsKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; };
+		9C5A2D651D19BDAD00B27310 /* JiraToolsKit.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */; };
 		9C6336C41D12383800EE38DA /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
 		9C6336C51D12383800EE38DA /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C6336C61D123A2100EE38DA /* Commandant.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
@@ -57,6 +59,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				9C5A2D641D19BDAD00B27310 /* JiraToolsKit.framework in CopyFiles */,
+				9C5A2D651D19BDAD00B27310 /* JiraToolsKit.framework.dSYM in CopyFiles */,
 				9C6336C61D123A2100EE38DA /* Commandant.framework in CopyFiles */,
 				9C4653D71D1230DE00EBDC98 /* Result.framework in CopyFiles */,
 				9C6336C81D123A2F00EE38DA /* Result.framework.dSYM in CopyFiles */,
