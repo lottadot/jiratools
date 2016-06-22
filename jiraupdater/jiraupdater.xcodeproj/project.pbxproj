@@ -177,7 +177,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9C4653B31D12300C00EBDC98 /* Build configuration list for PBXNativeTarget "jiraupdater" */;
 			buildPhases = (
-				9C4653D81D12311F00EBDC98 /* Update CLI Version */,
 				9C4653971D12300C00EBDC98 /* Sources */,
 				9C4653981D12300C00EBDC98 /* Frameworks */,
 				9C4653991D12300C00EBDC98 /* Resources */,
@@ -285,20 +284,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n#\n# Extracts the carthage CLI tool from its application bundle. Meant to be run\n# as part of an Xcode Run Script build phase.\n\ncp -v \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME}\"\n";
-		};
-		9C4653D81D12311F00EBDC98 /* Update CLI Version */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Update CLI Version";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash -e\n\nmain()\n{\n    local version=$(git describe --tags)\n    /usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString $version\" \"${BUILT_PRODUCTS_DIR}/JiraToolsKit.framework/Resources/Info.plist\"\n}\n\nmain\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
