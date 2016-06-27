@@ -79,7 +79,7 @@ public struct UpdateCommand: CommandType {
                 && !options.issueid.isEmpty
                 && !options.transitionname.isEmpty
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and issuetransition are required"))
+                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and transitionname are required"))
         }
         
         let runLoop = CFRunLoopGetCurrent()
