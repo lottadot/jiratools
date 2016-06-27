@@ -22,20 +22,20 @@ public struct CommentCommand: CommandType {
         public let username: String
         public let password: String
         public let issueid: String
-        public let comment: String
+        public let message: String
         
         public static func create(endpoint: String)
             -> (username: String)
             -> (password: String)
             -> (issueid: String)
-            -> (comment: String)
+            -> (message: String)
             -> Options {
-                return { username in { password in { issueid in { comment in
+                return { username in { password in { issueid in { message in
                     return self.init(endpoint: endpoint,
                                      username: username,
                                      password: password,
                                      issueid: issueid,
-                                     comment: comment)
+                                     message: message)
                     } } } }
         }
         
@@ -55,8 +55,8 @@ public struct CommentCommand: CommandType {
                                 defaultValue: passwordDefault, usage: "the password to authenticate with")
                 <*> m <| Option(key: "issueid",
                                 defaultValue: "", usage: "the Jira Ticket Id/Key")
-                <*> m <| Option(key: "comment",
-                                defaultValue: "", usage: "the comment to post to the issue. Optional.")
+                <*> m <| Option(key: "message",
+                                defaultValue: "", usage: "the message to post to the issue. Required.")
         }
     }
     
@@ -66,14 +66,14 @@ public struct CommentCommand: CommandType {
             let user:String  = options.username,
             let pass:String  = options.password,
             let issueIdentifier:String  = options.issueid,
-            let comment:String  = options.comment,
+            let message:String  = options.message,
             let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
             where !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
-                && !options.comment.isEmpty
+                && !options.message.isEmpty
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and comment are required"))
+                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and message are required"))
         }
         
         let runLoop = CFRunLoopGetCurrent()
@@ -87,7 +87,7 @@ public struct CommentCommand: CommandType {
                 CFRunLoopStop(runLoop)
                 return
             }
-            api.commentOnIssue(issue, comment: comment, completion: { (result) in
+            api.commentOnIssue(issue, comment: message, completion: { (result) in
                 if !result.success {
                     print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
                     exit(EXIT_FAILURE)
