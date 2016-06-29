@@ -24,6 +24,7 @@
 		9C6336C61D123A2100EE38DA /* Commandant.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
 		9C6336C71D123A2D00EE38DA /* Commandant.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CB1D12309000EBDC98 /* Commandant.framework.dSYM */; };
 		9C6336C81D123A2F00EE38DA /* Result.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CD1D12309100EBDC98 /* Result.framework.dSYM */; };
+		9C9913931D21F9A100B6158C /* Components.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C9913921D21F9A100B6158C /* Components.plist */; };
 		9C9CC4811D12E06D005D01A2 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4801D12E06D005D01A2 /* Version.swift */; };
 		9C9CC4841D12E0A6005D01A2 /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4831D12E0A6005D01A2 /* Update.swift */; };
 		9C9CC4861D12E8D7005D01A2 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4851D12E8D7005D01A2 /* Comment.swift */; };
@@ -57,7 +58,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 16;
+			dstSubfolderSpec = 10;
 			files = (
 				9C5A2D641D19BDAD00B27310 /* JiraToolsKit.framework in CopyFiles */,
 				9C5A2D651D19BDAD00B27310 /* JiraToolsKit.framework.dSYM in CopyFiles */,
@@ -87,6 +88,7 @@
 		9C4653CD1D12309100EBDC98 /* Result.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Result.framework.dSYM; path = ../Carthage/Build/Mac/Result.framework.dSYM; sourceTree = "<group>"; };
 		9C4653D91D12329000EBDC98 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9C4653DA1D12329000EBDC98 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		9C9913921D21F9A100B6158C /* Components.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Components.plist; path = ../../../jiraUpdater/jiraupdater/JiraUpdater/Components.plist; sourceTree = "<group>"; };
 		9C9CC4801D12E06D005D01A2 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Version.swift; path = Commands/Version.swift; sourceTree = "<group>"; };
 		9C9CC4831D12E0A6005D01A2 /* Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Update.swift; path = Commands/Update.swift; sourceTree = "<group>"; };
 		9C9CC4851D12E8D7005D01A2 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Comment.swift; path = Commands/Comment.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				9C46539E1D12300C00EBDC98 /* AppDelegate.swift */,
 				9C4653A01D12300C00EBDC98 /* Assets.xcassets */,
 				9C4653A21D12300C00EBDC98 /* MainMenu.xib */,
+				9C9913921D21F9A100B6158C /* Components.plist */,
 				9C4653A51D12300C00EBDC98 /* Info.plist */,
 			);
 			path = jiraupdater;
@@ -180,9 +183,9 @@
 				9C4653971D12300C00EBDC98 /* Sources */,
 				9C4653981D12300C00EBDC98 /* Frameworks */,
 				9C4653991D12300C00EBDC98 /* Resources */,
-				9C4653C91D12307A00EBDC98 /* Embed Frameworks */,
 				9C4653D41D1230BA00EBDC98 /* Extract CLI */,
 				9C4653D51D1230CF00EBDC98 /* CopyFiles */,
+				9C4653C91D12307A00EBDC98 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -254,6 +257,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C9913931D21F9A100B6158C /* Components.plist in Resources */,
 				9C4653A41D12300C00EBDC98 /* MainMenu.xib in Resources */,
 				34052B561D195B70003ED8D8 /* JiraToolsKit.framework.dSYM in Resources */,
 			);
