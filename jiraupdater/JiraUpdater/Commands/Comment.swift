@@ -21,22 +21,25 @@ public struct CommentCommand: CommandType {
         public let endpoint: String
         public let username: String
         public let password: String
-        public let issueid: String
+        public let issueid: String?
         public let message: String
+        public let issueids: String?
         
         public static func create(endpoint: String)
             -> (username: String)
             -> (password: String)
             -> (issueid: String)
             -> (message: String)
+            -> (issueids: String)
             -> Options {
-                return { username in { password in { issueid in { message in
+                return { username in { password in { issueid in { message in { issueids in
                     return self.init(endpoint: endpoint,
                                      username: username,
                                      password: password,
                                      issueid: issueid,
-                                     message: message)
-                    } } } }
+                                     message: message,
+                                     issueids: issueids)
+                    } } } } }
         }
         
         public static func evaluate(m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
@@ -54,9 +57,11 @@ public struct CommentCommand: CommandType {
                 <*> m <| Option(key: "password",
                                 defaultValue: passwordDefault, usage: "the password to authenticate with")
                 <*> m <| Option(key: "issueid",
-                                defaultValue: "", usage: "the Jira Ticket Id/Key")
+                                defaultValue: "", usage: "the Jira Ticket Id/Key. Optional.")
                 <*> m <| Option(key: "message",
                                 defaultValue: "", usage: "the message to post to the issue. Required.")
+                <*> m <| Option(key: "issueids",
+                                defaultValue: "", usage: "a comma delim'd list of issueids. Optional.")
         }
     }
     
@@ -67,34 +72,50 @@ public struct CommentCommand: CommandType {
             let pass:String  = options.password,
             let issueIdentifier:String  = options.issueid,
             let message:String  = options.message,
+            let issueIdentifiers: String = options.issueids,
             let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
             where !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
                 && !options.message.isEmpty
+                && (!options.issueid!.isEmpty || !options.issueids!.isEmpty)
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and message are required"))
+                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, (issueid or issues) and message are required"))
         }
         
         let runLoop = CFRunLoopGetCurrent()
         
-        api.getIssue(issueIdentifier) { (result) in
-            guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
-                if !result.success {
-                    print(JiraUpdaterError.InvalidIssue(description: "Issue \(issueIdentifier) not found").description)
-                    exit(EXIT_FAILURE)
-                }
-                CFRunLoopStop(runLoop)
-                return
+        var issueids:[String] = []
+        
+        if (!issueIdentifiers.isEmpty) {
+            issueids = issueIdentifiers.componentsSeparatedByString(",")
+            if issueids.count < 1 {
+                return .Failure(.InvalidArgument(description: "List of IssueIds malformed. Must be seperated by commas. An (issueid or issues) are required"))
             }
-            api.commentOnIssue(issue, comment: message, completion: { (result) in
-                if !result.success {
-                    print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
-                    exit(EXIT_FAILURE)
+        } else {
+            issueids.append(issueIdentifier)
+        }
+        
+        for identifier in issueids {
+            
+            api.getIssue(identifier) { (result) in
+                guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
+                    if !result.success {
+                        print(JiraUpdaterError.InvalidIssue(description: "Issue \(issueIdentifier) not found").description)
+                        exit(EXIT_FAILURE)
+                    }
+                    CFRunLoopStop(runLoop)
+                    return
                 }
-                CFRunLoopStop(runLoop)
-                return
-            })
+                api.commentOnIssue(issue, comment: message, completion: { (result) in
+                    if !result.success {
+                        print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
+                        exit(EXIT_FAILURE)
+                    }
+                    CFRunLoopStop(runLoop)
+                    return
+                })
+            }
         }
         
         CFRunLoopRun()

@@ -21,9 +21,10 @@ public struct UpdateCommand: CommandType {
         public let endpoint: String
         public let username: String
         public let password: String
-        public let issueid: String
+        public let issueid: String?
         public let transitionname: String
         public let comment: String?
+        public let issueids: String?
         
         public static func create(endpoint: String)
             -> (username: String)
@@ -31,15 +32,17 @@ public struct UpdateCommand: CommandType {
             -> (issueid: String)
             -> (transitionname: String)
             -> (comment: String?)
+            -> (issueids: String?)
             -> Options {
-                return { username in { password in { issueid in { transitionname in { comment in
+                return { username in { password in { issueid in { transitionname in { comment in { issueids in
                     return self.init(endpoint: endpoint,
                                      username: username,
                                      password: password,
                                      issueid: issueid,
                                      transitionname: transitionname,
-                                     comment: comment)
-                    } } } } }
+                                     comment: comment,
+                                     issueids: issueids)
+                    } } } } } }
         }
         
         public static func evaluate(m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
@@ -57,11 +60,13 @@ public struct UpdateCommand: CommandType {
                 <*> m <| Option(key: "password",
                                 defaultValue: passwordDefault, usage: "the password to authenticate with")
                 <*> m <| Option(key: "issueid",
-                                defaultValue: "", usage: "the Jira Ticket Id/Key")
+                                defaultValue: "", usage: "the Jira Ticket Id/Key. This or an list of issueids is required.")
                 <*> m <| Option(key: "transitionname",
                                 defaultValue: "", usage: "the Jira Transition to apply ie 'QA Ready'")
                 <*> m <| Option(key: "comment",
                                 defaultValue: "", usage: "the comment to post to the issue. Optional.")
+                <*> m <| Option(key: "issueids",
+                                defaultValue: "", usage: "comma delim'd issue list. This or an issueid is required.")
         }
     }
     
@@ -72,53 +77,68 @@ public struct UpdateCommand: CommandType {
             let pass:String  = options.password,
             let issueIdentifier:String  = options.issueid,
             let issueTransitionName:String  = options.transitionname,
+            let issueIdentifiers:String = options.issueids,
             let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
             where !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
-                && !options.issueid.isEmpty
                 && !options.transitionname.isEmpty
+                && (!options.issueid!.isEmpty || !options.issueids!.isEmpty)
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, issueid and transitionname are required"))
+                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, (issueid or issues) and transitionname are required"))
         }
         
         let runLoop = CFRunLoopGetCurrent()
         
-        self.updateIssue(api, issueId: issueIdentifier, withTransitionNamed: issueTransitionName, withComment: options.comment) { (result) in
-            
-            if !result.success {
-                
-                if let error = result.error {
-                    print(JiraUpdaterError.CommentFailed(description: error.description).description)
-                } else {
-                    print(JiraUpdaterError.TransitionFailed(description: "Update of Issue \(issueIdentifier) failed").description)
-                }
-
-                CFRunLoopStop(runLoop)
-                exit(EXIT_FAILURE)
-            } else {
-
-                if !(options.comment?.isEmpty)! {
-                    
-                    self.commentIssue(api, issueId: issueIdentifier, commentBody: options.comment!, completion: { (result) in
-                        if !result.success {
-                            
-                            if let error = result.error {
-                                print(JiraUpdaterError.CommentFailed(description: error.localizedDescription).description)
-                            } else {
-                                print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
-                            }
-                            exit(EXIT_FAILURE)
-                        }
-                        CFRunLoopStop(runLoop)
-                    })
-                } else {
-                    CFRunLoopStop(runLoop)
-                }
+        var issueids:[String] = []
+        
+        if (!issueIdentifiers.isEmpty) {
+            issueids = issueIdentifiers.componentsSeparatedByString(",")
+            if issueids.count < 1 {
+                return .Failure(.InvalidArgument(description: "List of IssueIds malformed. Must be seperated by commas. An (issueid or issues) are required"))
             }
-
+        } else {
+            issueids.append(issueIdentifier)
         }
-
+        
+        for identifier in issueids {
+            
+            self.updateIssue(api, issueId: identifier, withTransitionNamed: issueTransitionName, withComment: options.comment) { (result) in
+                
+                if !result.success {
+                    
+                    if let error = result.error {
+                        print(JiraUpdaterError.CommentFailed(description: error.description).description)
+                    } else {
+                        print(JiraUpdaterError.TransitionFailed(description: "Update of Issue \(issueIdentifier) failed").description)
+                    }
+                    
+                    CFRunLoopStop(runLoop)
+                    exit(EXIT_FAILURE)
+                } else {
+                    
+                    if !(options.comment?.isEmpty)! {
+                        
+                        self.commentIssue(api, issueId: issueIdentifier, commentBody: options.comment!, completion: { (result) in
+                            if !result.success {
+                                
+                                if let error = result.error {
+                                    print(JiraUpdaterError.CommentFailed(description: error.localizedDescription).description)
+                                } else {
+                                    print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
+                                }
+                                exit(EXIT_FAILURE)
+                            }
+                            CFRunLoopStop(runLoop)
+                        })
+                    } else {
+                        CFRunLoopStop(runLoop)
+                    }
+                }
+                
+            }
+        }
+        
         CFRunLoopRun()
         return .Success(())
     }
