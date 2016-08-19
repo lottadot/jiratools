@@ -7,23 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		34052B531D195B5E003ED8D8 /* JiraToolsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; };
-		34052B541D195B5E003ED8D8 /* JiraToolsKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34052B561D195B70003ED8D8 /* JiraToolsKit.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */; };
+		9C2A867B1D6651610068834D /* JiraToolsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; };
+		9C2A867C1D6651610068834D /* JiraToolsKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9C2A867D1D6651610068834D /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
+		9C2A867E1D6651610068834D /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9C2A867F1D6651610068834D /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; };
+		9C2A86801D6651610068834D /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C4653A41D12300C00EBDC98 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4653A21D12300C00EBDC98 /* MainMenu.xib */; };
 		9C4653AF1D12300C00EBDC98 /* jiraupdaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653AE1D12300C00EBDC98 /* jiraupdaterTests.swift */; };
-		9C4653D01D12309100EBDC98 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; };
-		9C4653D31D12309B00EBDC98 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9C4653D71D1230DE00EBDC98 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CC1D12309000EBDC98 /* Result.framework */; };
 		9C4653DB1D12329000EBDC98 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653D91D12329000EBDC98 /* Errors.swift */; };
 		9C4653DC1D12329000EBDC98 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653DA1D12329000EBDC98 /* main.swift */; };
-		9C5A2D641D19BDAD00B27310 /* JiraToolsKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; };
-		9C5A2D651D19BDAD00B27310 /* JiraToolsKit.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */; };
-		9C6336C41D12383800EE38DA /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
-		9C6336C51D12383800EE38DA /* Commandant.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9C6336C61D123A2100EE38DA /* Commandant.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
-		9C6336C71D123A2D00EE38DA /* Commandant.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CB1D12309000EBDC98 /* Commandant.framework.dSYM */; };
-		9C6336C81D123A2F00EE38DA /* Result.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9C4653CD1D12309100EBDC98 /* Result.framework.dSYM */; };
 		9C9913931D21F9A100B6158C /* Components.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C9913921D21F9A100B6158C /* Components.plist */; };
 		9C9CC4811D12E06D005D01A2 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4801D12E06D005D01A2 /* Version.swift */; };
 		9C9CC4841D12E0A6005D01A2 /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4831D12E0A6005D01A2 /* Update.swift */; };
@@ -41,32 +35,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9C4653C91D12307A00EBDC98 /* Embed Frameworks */ = {
+		9C2A86811D6651610068834D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9C6336C51D12383800EE38DA /* Commandant.framework in Embed Frameworks */,
-				9C4653D31D12309B00EBDC98 /* Result.framework in Embed Frameworks */,
-				34052B541D195B5E003ED8D8 /* JiraToolsKit.framework in Embed Frameworks */,
+				9C2A86801D6651610068834D /* Result.framework in Embed Frameworks */,
+				9C2A867E1D6651610068834D /* Commandant.framework in Embed Frameworks */,
+				9C2A867C1D6651610068834D /* JiraToolsKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9C4653D51D1230CF00EBDC98 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9C5A2D641D19BDAD00B27310 /* JiraToolsKit.framework in CopyFiles */,
-				9C5A2D651D19BDAD00B27310 /* JiraToolsKit.framework.dSYM in CopyFiles */,
-				9C6336C61D123A2100EE38DA /* Commandant.framework in CopyFiles */,
-				9C4653D71D1230DE00EBDC98 /* Result.framework in CopyFiles */,
-				9C6336C81D123A2F00EE38DA /* Result.framework.dSYM in CopyFiles */,
-				9C6336C71D123A2D00EE38DA /* Commandant.framework.dSYM in CopyFiles */,
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -88,7 +67,7 @@
 		9C4653CD1D12309100EBDC98 /* Result.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Result.framework.dSYM; path = ../Carthage/Build/Mac/Result.framework.dSYM; sourceTree = "<group>"; };
 		9C4653D91D12329000EBDC98 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9C4653DA1D12329000EBDC98 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		9C9913921D21F9A100B6158C /* Components.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Components.plist; path = ../../../jiraUpdater/jiraupdater/JiraUpdater/Components.plist; sourceTree = "<group>"; };
+		9C9913921D21F9A100B6158C /* Components.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Components.plist; path = ../JiraUpdater/Components.plist; sourceTree = "<group>"; };
 		9C9CC4801D12E06D005D01A2 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Version.swift; path = Commands/Version.swift; sourceTree = "<group>"; };
 		9C9CC4831D12E0A6005D01A2 /* Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Update.swift; path = Commands/Update.swift; sourceTree = "<group>"; };
 		9C9CC4851D12E8D7005D01A2 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Comment.swift; path = Commands/Comment.swift; sourceTree = "<group>"; };
@@ -99,9 +78,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C6336C41D12383800EE38DA /* Commandant.framework in Frameworks */,
-				9C4653D01D12309100EBDC98 /* Result.framework in Frameworks */,
-				34052B531D195B5E003ED8D8 /* JiraToolsKit.framework in Frameworks */,
+				9C2A867F1D6651610068834D /* Result.framework in Frameworks */,
+				9C2A867D1D6651610068834D /* Commandant.framework in Frameworks */,
+				9C2A867B1D6651610068834D /* JiraToolsKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,8 +163,7 @@
 				9C4653981D12300C00EBDC98 /* Frameworks */,
 				9C4653991D12300C00EBDC98 /* Resources */,
 				9C4653D41D1230BA00EBDC98 /* Extract CLI */,
-				9C4653D51D1230CF00EBDC98 /* CopyFiles */,
-				9C4653C91D12307A00EBDC98 /* Embed Frameworks */,
+				9C2A86811D6651610068834D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
