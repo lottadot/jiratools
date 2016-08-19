@@ -117,7 +117,7 @@ public struct UpdateCommand: CommandType {
                     if let error = result.error {
                         print(JiraUpdaterError.CommentFailed(description: error.description).description)
                     } else {
-                        print(JiraUpdaterError.TransitionFailed(description: "Update of Issue \(issueIdentifier) failed").description)
+                        print(JiraUpdaterError.TransitionFailed(description: "Update of Issue '\(identifier)' failed").description)
                     }
                     
                     CFRunLoopStop(runLoop)
@@ -132,7 +132,7 @@ public struct UpdateCommand: CommandType {
                                 if let error = result.error {
                                     print(JiraUpdaterError.CommentFailed(description: error.localizedDescription).description)
                                 } else {
-                                    print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
+                                    print(JiraUpdaterError.CommentFailed(description: "Comment on Issue '\(identifier)' failed").description)
                                 }
                                 exit(EXIT_FAILURE)
                             }
