@@ -94,6 +94,9 @@ public struct CommentCommand: CommandType {
             issueids.append(oneIssueIdentifier)
         }
         
+        if issueids.isEmpty {
+            print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier(s) must provided. Use --issueids or --issueid.").description)
+            exit(EXIT_FAILURE)
         }
         
         for identifier in issueids {
