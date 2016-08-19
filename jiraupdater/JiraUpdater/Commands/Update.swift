@@ -92,13 +92,12 @@ public struct UpdateCommand: CommandType {
         
         var issueids:[String] = []
         
-        if (!issueIdentifiers.isEmpty) {
-            issueids = issueIdentifiers.componentsSeparatedByString(",")
-            if issueids.count < 1 {
-                return .Failure(.InvalidArgument(description: "List of IssueIds malformed. Must be seperated by commas. An (issueid or issues) are required"))
-            }
-        } else {
-            issueids.append(issueIdentifier)
+        if let idents:String = issueIdentifiers, let identifiers:[String] = idents.componentsSeparatedByString(",") where !identifiers.isEmpty {
+            issueids.appendContentsOf(identifiers)
+        } else if let oneIssueIdentifier:String = issueIdentifier where oneIssueIdentifier.characters.count > 0 {
+            issueids.append(oneIssueIdentifier)
+        }
+        
         }
         
         for identifier in issueids {
