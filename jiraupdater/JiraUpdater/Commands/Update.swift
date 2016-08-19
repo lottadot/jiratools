@@ -105,6 +105,11 @@ public struct UpdateCommand: CommandType {
         
         for identifier in issueids {
             
+            guard identifier.characters.count > 0 else {
+                print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
+                exit(EXIT_FAILURE)
+            }
+            
             self.updateIssue(api, issueId: identifier, withTransitionNamed: issueTransitionName, withComment: options.comment) { (result) in
                 
                 if !result.success {

@@ -101,6 +101,11 @@ public struct CommentCommand: CommandType {
         
         for identifier in issueids {
             
+            guard identifier.characters.count > 0 else {
+                print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
+                exit(EXIT_FAILURE)
+            }
+            
             api.getIssue(identifier) { (result) in
                 guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
                     if !result.success {
