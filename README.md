@@ -1,4 +1,11 @@
-## Jira Update Tool
+## Jira tools
+
+### 
+
+This repo will contain a collection of tiny useful tools for Jira and CI. As of 2016-08-18 it consists of only one tool, `jiraupdater`.
+
+### Jira Updater Tool
+
 
 #### Description 
 
@@ -100,7 +107,7 @@ cd jiratools
 make install
 ```
 
-##### Homebrew
+##### Homebrew Tap (coming soon as of 2016-08-18)
 
 ```
 brew tap lottadot/homebrew-formulae
