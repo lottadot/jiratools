@@ -107,17 +107,19 @@ public struct CommentCommand: CommandType {
             }
             
             api.getIssue(identifier) { (result) in
+                
                 guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
                     if !result.success {
-                        print(JiraUpdaterError.InvalidIssue(description: "Issue \(issueIdentifier) not found").description)
+                        print(JiraUpdaterError.InvalidIssue(description: "Issue '\(identifier)' not found").description)
                         exit(EXIT_FAILURE)
                     }
                     CFRunLoopStop(runLoop)
                     return
                 }
+                
                 api.commentOnIssue(issue, comment: message, completion: { (result) in
                     if !result.success {
-                        print(JiraUpdaterError.CommentFailed(description: "Comment on Issue \(issueIdentifier) failed").description)
+                        print(JiraUpdaterError.CommentFailed(description: "Comment on Issue '\(identifier)' failed").description)
                         exit(EXIT_FAILURE)
                     }
                     CFRunLoopStop(runLoop)
