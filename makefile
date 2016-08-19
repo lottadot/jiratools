@@ -27,7 +27,6 @@ carthage:
 	carthage update
 
 bootstrap:
-	git submodule update --init --recursive
 	carthage bootstrap --platform mac --no-use-binaries
 
 # xcodebuild -workspace JiraTools.xcworkspace -scheme jiraupdater CONFIGURATION_BUILD_DIR='build'
@@ -71,6 +70,3 @@ package: installables
 		--root "$(TEMPORARY_FOLDER)" \
 		--version "$(VERSION_STRING)" \
 		"$(OUTPUT_PACKAGE)"
-
-		#(cd "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)" && zip -q -r --symlinks - "$(OUTPUT_FRAMEWORK)") > "$(OUTPUT_FRAMEWORK_ZIP)"
-
