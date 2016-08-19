@@ -11,7 +11,7 @@ I created this to use it in our CI Environment. And also, possibly in the future
 ##### How To use this?
 
 ```
- ./jiraupdater help
+ jiraupdater help
 Available commands:
 
    comment   Comment on a Jira Ticket
@@ -23,7 +23,7 @@ Available commands:
 ie 
 
 ```
- ./jiraupdater help update
+ jiraupdater help update
 Update a Jira Ticket
 
 [--endpoint (string)]
@@ -36,13 +36,16 @@ Update a Jira Ticket
 	the password to authenticate with
 
 [--issueid (string)]
-	the Jira Ticket Id/Key
+	the Jira Ticket Id/Key. This or an list of issueids is required.
 
 [--transitionname (string)]
 	the Jira Transition to apply ie 'QA Ready'
 
 [--comment (string)]
 	the comment to post to the issue. Optional.
+
+[--issueids (string)]
+	comma delim'd issue list. This or an issueid is required.
 ```
 
 ```
@@ -58,6 +61,11 @@ or
 ```
 jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueid TP1-1 --comment "Bugs Bunny is funny."
 ```
+or
+```
+jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueids TP1-1,TP=2 --comment "Ready for QA in v2.1 build #10"
+```
+
 ##### Security
 
 If you'd like to use this in a CI setup, you can alternatively provide the URL, username and password via environment variables:
@@ -85,14 +93,19 @@ If you would like to try this but are hesitant to run it against your production
 
 #### Get started
 
+##### From Source
+
 ```
 git clone https://github.com/lottadot/jiratools.git
 cd jiratools
-carthage bootstrap
-open JiraTools.xcworkspace
+make install
 ```
 
-Then build the Xcode project with the `jiraupdater` build scheme. In the build products directory in your Derived Data you'll find the `jiraupdater` command line app.
+##### Homebrew
+
+```
+brew install jiratools
+```
 
 ### License
 
