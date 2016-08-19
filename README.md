@@ -94,7 +94,6 @@ If you would like to try this but are hesitant to run it against your production
 #### Get started
 
 ##### From Source
-
 ```
 git clone https://github.com/lottadot/jiratools.git
 cd jiratools
@@ -104,6 +103,7 @@ make install
 ##### Homebrew
 
 ```
+brew tap lottadot/homebrew-formulae
 brew install jiratools
 ```
 
