@@ -57,8 +57,9 @@ installables: clean bootstrap
 
 prefix_install: installables
 	mkdir -p "$(PREFIX)/Frameworks" "$(PREFIX)/bin"
-	cp -rf "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks" "$(PREFIX)/Frameworks/"
+	cp -rf "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/JiraToolsKit.framework" "$(PREFIX)/Frameworks/"
 	cp -f "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/jiraupdater" "$(PREFIX)/bin/"
+	install_name_tool -add_rpath "@executable_path/../Frameworks" "$(PREFIX)/bin/jiraupdater"
 	install_name_tool -add_rpath "@executable_path/../Frameworks/JiraToolsKit.framework/Versions/Current/Frameworks/" "$(PREFIX)/bin/jiraupdater"
 
 package: installables
