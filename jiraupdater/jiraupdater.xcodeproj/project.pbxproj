@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		34052B561D195B70003ED8D8 /* JiraToolsKit.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */; };
+		3440B6F01D6A6F3800B08F16 /* ChangelogKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3440B6EF1D6A6F3800B08F16 /* ChangelogKit.framework */; };
+		3440B6F11D6A6F3800B08F16 /* ChangelogKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3440B6EF1D6A6F3800B08F16 /* ChangelogKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C2A867B1D6651610068834D /* JiraToolsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; };
 		9C2A867C1D6651610068834D /* JiraToolsKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C2A867D1D6651610068834D /* Commandant.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4653CA1D12309000EBDC98 /* Commandant.framework */; };
@@ -43,6 +45,7 @@
 			files = (
 				9C2A86801D6651610068834D /* Result.framework in Embed Frameworks */,
 				9C2A867E1D6651610068834D /* Commandant.framework in Embed Frameworks */,
+				3440B6F11D6A6F3800B08F16 /* ChangelogKit.framework in Embed Frameworks */,
 				9C2A867C1D6651610068834D /* JiraToolsKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -53,6 +56,7 @@
 /* Begin PBXFileReference section */
 		34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JiraToolsKit.framework; path = ../Carthage/Build/Mac/JiraToolsKit.framework; sourceTree = "<group>"; };
 		34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = JiraToolsKit.framework.dSYM; path = ../Carthage/Build/Mac/JiraToolsKit.framework.dSYM; sourceTree = "<group>"; };
+		3440B6EF1D6A6F3800B08F16 /* ChangelogKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChangelogKit.framework; path = ../Carthage/Build/Mac/ChangelogKit.framework; sourceTree = "<group>"; };
 		9C46539B1D12300C00EBDC98 /* jiraupdater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jiraupdater.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C46539E1D12300C00EBDC98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C4653A01D12300C00EBDC98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -80,6 +84,7 @@
 			files = (
 				9C2A867F1D6651610068834D /* Result.framework in Frameworks */,
 				9C2A867D1D6651610068834D /* Commandant.framework in Frameworks */,
+				3440B6F01D6A6F3800B08F16 /* ChangelogKit.framework in Frameworks */,
 				9C2A867B1D6651610068834D /* JiraToolsKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +102,7 @@
 		9C4653921D12300C00EBDC98 = {
 			isa = PBXGroup;
 			children = (
+				3440B6EF1D6A6F3800B08F16 /* ChangelogKit.framework */,
 				9C46539D1D12300C00EBDC98 /* jiraupdater */,
 				9C4653AD1D12300C00EBDC98 /* jiraupdaterTests */,
 				9C46539C1D12300C00EBDC98 /* Products */,
