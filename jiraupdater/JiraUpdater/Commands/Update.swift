@@ -11,6 +11,7 @@ import Swift
 import JiraToolsKit
 import Result
 import Commandant
+import ChangelogKit
 
 /// The Update Jira Ticket subcommand
 public struct UpdateCommand: CommandType {
@@ -25,6 +26,7 @@ public struct UpdateCommand: CommandType {
         public let transitionname: String
         public let comment: String?
         public let issueids: String?
+        public let changelog: String?
         
         public static func create(endpoint: String)
             -> (username: String)
@@ -33,16 +35,18 @@ public struct UpdateCommand: CommandType {
             -> (transitionname: String)
             -> (comment: String?)
             -> (issueids: String?)
+            -> (changelog: String?)
             -> Options {
-                return { username in { password in { issueid in { transitionname in { comment in { issueids in
+                return { username in { password in { issueid in { transitionname in { comment in { issueids in { changelog in
                     return self.init(endpoint: endpoint,
                                      username: username,
                                      password: password,
                                      issueid: issueid,
                                      transitionname: transitionname,
                                      comment: comment,
-                                     issueids: issueids)
-                    } } } } } }
+                                     issueids: issueids,
+                                     changelog: changelog)
+                    } } } } } } }
         }
         
         public static func evaluate(m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
@@ -67,6 +71,8 @@ public struct UpdateCommand: CommandType {
                                 defaultValue: "", usage: "the comment to post to the issue. Optional.")
                 <*> m <| Option(key: "issueids",
                                 defaultValue: "", usage: "comma delim'd issue list. This or an issueid is required.")
+                <*> m <| Option(key: "changelog",
+                                defaultValue: "", usage: "CHANGELOG absolute file path to use (instead of specifying issueIds")
         }
     }
     
@@ -78,7 +84,9 @@ public struct UpdateCommand: CommandType {
             let issueIdentifier:String  = options.issueid,
             let issueTransitionName:String  = options.transitionname,
             let issueIdentifiers:String = options.issueids,
-            let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
+            let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass),
+            let changeLogFile:String = options.changelog,
+            var comment = options.comment
             where !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
@@ -92,7 +100,25 @@ public struct UpdateCommand: CommandType {
         
         var issueids:[String] = []
         
-        if let idents:String = issueIdentifiers, let identifiers:[String] = idents.componentsSeparatedByString(",") where !identifiers.isEmpty {
+        if let changelogFilePath:String = changeLogFile, let path:NSURL = NSURL(fileURLWithPath: changelogFilePath),
+            let rawNSString:NSString = try! NSString(contentsOfURL: path, encoding: NSUTF8StringEncoding),
+            let text:String = rawNSString as String {
+
+            var lines:[String] = []
+            text.enumerateLines { lines.append($0.line)}
+            
+            let cla = ChangelogAnalyzer(changelog: lines)
+            if let tickets = cla.tickets() where !tickets.isEmpty {
+                for ticket in tickets.reverse() {
+                    if let ticketId = ticket.componentsSeparatedByString(" ").first {
+                        issueids.append(ticketId)
+                    }
+                }
+            }
+            
+            
+
+        } else if let idents:String = issueIdentifiers, let identifiers:[String] = idents.componentsSeparatedByString(",") where !identifiers.isEmpty {
             issueids.appendContentsOf(identifiers)
         } else if let oneIssueIdentifier:String = issueIdentifier where oneIssueIdentifier.characters.count > 0 {
             issueids.append(oneIssueIdentifier)
