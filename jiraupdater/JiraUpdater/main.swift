@@ -34,6 +34,9 @@ registry.register(helpCommand)
 let updateCommand = UpdateCommand()
 registry.register(updateCommand)
 
+let changelogCommand = ChangelogCommand()
+registry.register(changelogCommand)
+
 let commentCommand = CommentCommand()
 registry.register(commentCommand)
 

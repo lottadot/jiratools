@@ -21,6 +21,7 @@
 		9C4653DB1D12329000EBDC98 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653D91D12329000EBDC98 /* Errors.swift */; };
 		9C4653DC1D12329000EBDC98 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4653DA1D12329000EBDC98 /* main.swift */; };
 		9C9913931D21F9A100B6158C /* Components.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C9913921D21F9A100B6158C /* Components.plist */; };
+		9C9946901D6B64BD008CA5A8 /* Changelog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C99468F1D6B64BD008CA5A8 /* Changelog.swift */; };
 		9C9CC4811D12E06D005D01A2 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4801D12E06D005D01A2 /* Version.swift */; };
 		9C9CC4841D12E0A6005D01A2 /* Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4831D12E0A6005D01A2 /* Update.swift */; };
 		9C9CC4861D12E8D7005D01A2 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9CC4851D12E8D7005D01A2 /* Comment.swift */; };
@@ -72,6 +73,7 @@
 		9C4653D91D12329000EBDC98 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9C4653DA1D12329000EBDC98 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9C9913921D21F9A100B6158C /* Components.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Components.plist; path = ../JiraUpdater/Components.plist; sourceTree = "<group>"; };
+		9C99468F1D6B64BD008CA5A8 /* Changelog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Changelog.swift; path = JiraUpdater/Commands/Changelog.swift; sourceTree = SOURCE_ROOT; };
 		9C9CC4801D12E06D005D01A2 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Version.swift; path = Commands/Version.swift; sourceTree = "<group>"; };
 		9C9CC4831D12E0A6005D01A2 /* Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Update.swift; path = Commands/Update.swift; sourceTree = "<group>"; };
 		9C9CC4851D12E8D7005D01A2 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Comment.swift; path = Commands/Comment.swift; sourceTree = "<group>"; };
@@ -102,7 +104,6 @@
 		9C4653921D12300C00EBDC98 = {
 			isa = PBXGroup;
 			children = (
-				3440B6EF1D6A6F3800B08F16 /* ChangelogKit.framework */,
 				9C46539D1D12300C00EBDC98 /* jiraupdater */,
 				9C4653AD1D12300C00EBDC98 /* jiraupdaterTests */,
 				9C46539C1D12300C00EBDC98 /* Products */,
@@ -123,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				9C4653DA1D12329000EBDC98 /* main.swift */,
+				9C99468F1D6B64BD008CA5A8 /* Changelog.swift */,
 				9C9CC4851D12E8D7005D01A2 /* Comment.swift */,
 				9C9CC4831D12E0A6005D01A2 /* Update.swift */,
 				9C9CC4801D12E06D005D01A2 /* Version.swift */,
@@ -148,6 +150,7 @@
 		9C4653B91D12305300EBDC98 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3440B6EF1D6A6F3800B08F16 /* ChangelogKit.framework */,
 				34052B521D195B5E003ED8D8 /* JiraToolsKit.framework */,
 				34052B551D195B70003ED8D8 /* JiraToolsKit.framework.dSYM */,
 				9C4653CA1D12309000EBDC98 /* Commandant.framework */,
@@ -282,6 +285,7 @@
 			files = (
 				9C9CC4861D12E8D7005D01A2 /* Comment.swift in Sources */,
 				9C4653DB1D12329000EBDC98 /* Errors.swift in Sources */,
+				9C9946901D6B64BD008CA5A8 /* Changelog.swift in Sources */,
 				9C9CC4811D12E06D005D01A2 /* Version.swift in Sources */,
 				9C9CC4841D12E0A6005D01A2 /* Update.swift in Sources */,
 				9C4653DC1D12329000EBDC98 /* main.swift in Sources */,
