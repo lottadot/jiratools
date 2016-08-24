@@ -24,22 +24,22 @@ public struct ChangelogCommand: CommandType {
         public let password: String
         public let transitionname: String
         public let comment: String
-        public let changelog: String?
+        public let file: String?
         
         public static func create(endpoint: String)
             -> (username: String)
             -> (password: String)
             -> (transitionname: String)
             -> (comment: String)
-            -> (changelog: String?)
+            -> (file: String?)
             -> Options {
-                return { username in { password in { transitionname in { comment in { changelog in
+                return { username in { password in { transitionname in { comment in { file in
                     return self.init(endpoint: endpoint,
                                      username: username,
                                      password: password,
                                      transitionname: transitionname,
                                      comment: comment,
-                                     changelog: changelog)
+                                     file: file)
                     } } } } }
         }
         
@@ -61,7 +61,7 @@ public struct ChangelogCommand: CommandType {
                                 defaultValue: "", usage: "the Jira Transition to apply ie 'QA Ready'")
                 <*> m <| Option(key: "comment",
                                 defaultValue: "Ready for QA in {VERSION} #{BUILDNUMBER}.", usage: "the templated ({VERSION}, {BUILDNUMBER}) comment to post to the issue. Optional.")
-                <*> m <| Option(key: "changelog",
+                <*> m <| Option(key: "file",
                                 defaultValue: "CHANGELOG", usage: "The absolute path of the changelog file to use.")
         }
     }
@@ -72,7 +72,7 @@ public struct ChangelogCommand: CommandType {
             let user:String  = options.username,
             let pass:String  = options.password,
             let issueTransitionName:String  = options.transitionname,
-            let changelog:String = options.changelog,
+            let file:String = options.file,
             let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass),
             let comment:String = options.comment
             where !options.endpoint.isEmpty
@@ -86,7 +86,7 @@ public struct ChangelogCommand: CommandType {
         let runLoop = CFRunLoopGetCurrent()
 
         do {
-            let path = NSURL(fileURLWithPath: changelog)
+            let path = NSURL(fileURLWithPath: file)
             let text = try NSString(contentsOfURL: path, encoding: NSUTF8StringEncoding) as String
             var lines:[String] = []
             text.enumerateLines { lines.append($0.line)}
