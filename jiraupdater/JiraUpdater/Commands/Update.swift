@@ -85,8 +85,7 @@ public struct UpdateCommand: CommandType {
             let issueTransitionName:String  = options.transitionname,
             let issueIdentifiers:String = options.issueids,
             let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass),
-            let changeLogFile:String = options.changelog,
-            var comment = options.comment
+            let changeLogFile:String = options.changelog
             where !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
@@ -115,9 +114,7 @@ public struct UpdateCommand: CommandType {
                     }
                 }
             }
-            
-            
-
+ 
         } else if let idents:String = issueIdentifiers, let identifiers:[String] = idents.componentsSeparatedByString(",") where !identifiers.isEmpty {
             issueids.appendContentsOf(identifiers)
         } else if let oneIssueIdentifier:String = issueIdentifier where oneIssueIdentifier.characters.count > 0 {
