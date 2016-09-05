@@ -21,10 +21,11 @@ I created this to use it in our CI Environment. And also, possibly in the future
  jiraupdater help
 Available commands:
 
-   comment   Comment on a Jira Ticket
-   help      Display general or command-specific help
-   update    Update a Jira Ticket
-   version   Display the current version of JiraUpdater
+   changelog   Update Jira tickets from a Changelog
+   comment     Comment on a Jira Ticket
+   help        Display general or command-specific help
+   update      Update a Jira Ticket
+   version     Display the current version of JiraUpdater
 ```
 
 ie 
@@ -71,6 +72,43 @@ jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretu
 or
 ```
 jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueids TP1-1,TP=2 --comment "Ready for QA in v2.1 build #10"
+```
+
+Or if you'd like it to parse a changelog: (see [ChangelogKit](https://github.com/lottadot/Changelogkit) and [ChangelogParser](https://github.com/lottadot/ChangelogParser))
+
+```
+$ jiraupdater help changelog
+Update Jira tickets from a Changelog
+
+[--endpoint (string)]
+	the JIRA API EndPoint URL ie http://jira.example.com/
+
+[--username (string)]
+	the username to authenticate with
+
+[--password (string)]
+	the password to authenticate with
+
+[--transitionname (string)]
+	the Jira Transition to apply ie 'QA Ready'
+
+[--comment (string)]
+	the templated ({VERSION}, {BUILDNUMBER}) comment to post to the issue. Optional.
+
+[--file (string)]
+	The absolute path of the changelog file to use.
+```
+
+so
+
+```
+jiraupdater changelog --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --file CHANGELOG --comment "Ready for QA in v2.1 build #10"
+```
+
+or, since we default to a filename of `CHANGELOG` (note it's case specific depending on your file system choices):
+
+```
+jiraupdater changelog --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword --comment "Ready for QA in v2.1 build #10"
 ```
 
 ##### Security
