@@ -12,7 +12,9 @@ import JiraToolsKit
 import Result
 import Commandant
 
-if let jiraUpdaterPath = NSBundle.mainBundle().executablePath {
+setlinebuf(stdout)
+
+if let jiraUpdaterPath = Bundle.main.executablePath {
     setenv("JIRAUPDATER_PATH", jiraUpdaterPath, 0)
 }
 
