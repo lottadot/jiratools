@@ -151,7 +151,7 @@ cd jiratools
 make install
 ```
 
-##### Homebrew Tap (coming soon as of 2016-08-18)
+##### Homebrew Tap
 
 ```
 brew tap lottadot/homebrew-formulae
