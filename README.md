@@ -43,17 +43,14 @@ Update a Jira Ticket
 [--password (string)]
 	the password to authenticate with
 
-[--issueid (string)]
-	the Jira Ticket Id/Key. This or an list of issueids is required.
-
 [--transitionname (string)]
 	the Jira Transition to apply ie 'QA Ready'
 
+[--issueids (string)]
+	comma delim'd issue list. Atleast one is required.
+
 [--comment (string)]
 	the comment to post to the issue. Optional.
-
-[--issueids (string)]
-	comma delim'd issue list. This or an issueid is required.
 ```
 
 ```
@@ -62,12 +59,12 @@ jiraupdater update --endpoint "http://localhost:2990/jira" --username mysecretus
 or
 
 ```
-jiraupdater update --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueid TP1-1 --transitionname "QA Ready" --comment "This is available in v1.0 build #30 2016-06-16"
+jiraupdater update --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueids TP1-1 --transitionname "QA Ready" --comment "This is available in v1.0 build #30 2016-06-16"
 ``` 
 or
 
 ```
-jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueid TP1-1 --comment "Bugs Bunny is funny."
+jiraupdater comment --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword  --issueids TP1-1 --comment "Bugs Bunny is funny."
 ```
 or
 ```
@@ -111,9 +108,15 @@ or, since we default to a filename of `CHANGELOG` (note it's case specific depen
 jiraupdater changelog --endpoint "http://localhost:2990/jira" --username mysecretusername --password mysecretpassword --comment "Ready for QA in v2.1 build #10"
 ```
 
+or if you're providing Jira Endpoint information via environment variables:
+
+```
+jiraupdater changelog --comment "Ready for QA in v2.1 build #10"
+```
+
 ##### Security
 
-If you'd like to use this in a CI setup, you can alternatively provide the URL, username and password via environment variables:
+As a convenience (ie you'd like to use this in a CI setup, etc), you can alternatively provide the URL, username and password via environment variables:
 
 ```
 export JIRAUPDATER_ENDPOINT=http://localhost:2990/jira
@@ -123,8 +126,11 @@ export JIRAUPDATER_PASSWORD=yourpassword
 
 ###### Things to note
 
-* Basic Authentication must be enabled on your `JIRA` installation.
-* Some JIRA setups (can) prevent posting a comment when transitioning ('`Updating`' in `jiraupdatetool-speak`) an issue from one Workflow status to another. And it won't necessarily return an error in this configuration when attempted. If your Jira setup is like this, either consider changing the setup, or don't use `--comment` with `update`. Instead post the comment with `--comment` alone.
+* Basic Authentication *must* be enabled on your `JIRA` installation.
+* Some JIRA setups (can) prevent posting a comment when transitioning ('`Updating`' in `jiraupdatetool-speak`) an issue from one Workflow status to another. And it won't necessarily return an error in this configuration when attempted. If your Jira setup is like this, either:
+
+1. consider changing the setup, or 
+2. don't use `--comment` with `update`. Instead post the comment with `comment` command alone.
 
 ##### Trial Jira Instance
 

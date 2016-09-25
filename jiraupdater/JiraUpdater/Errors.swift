@@ -9,27 +9,27 @@
 import Foundation
 
 /// Possible errors that can originate from JiraUpdater.
-public enum JiraUpdaterError: ErrorType, Equatable {
+public enum JiraUpdaterError: Error, Equatable {
     
     /// One or more arguments was invalid.
-    case InvalidArgument(description: String)
+    case invalidArgument(description: String)
     
     /// Transition not found
-    case InvalidTransition(description: String)
+    case invalidTransition(description: String)
     
     /// Transition failed
-    case TransitionFailed(description: String)
+    case transitionFailed(description: String)
     
     /// Issue not found
-    case InvalidIssue(description: String)
+    case invalidIssue(description: String)
     
     /// Comment Failed
-    case CommentFailed(description: String)
+    case commentFailed(description: String)
 }
 
 public func == (lhs: JiraUpdaterError, rhs: JiraUpdaterError) -> Bool {
     switch (lhs, rhs) {
-    case let (.InvalidArgument(left), .InvalidArgument(right)):
+    case let (.invalidArgument(left), .invalidArgument(right)):
         return left == right
     
     default:
@@ -40,19 +40,19 @@ public func == (lhs: JiraUpdaterError, rhs: JiraUpdaterError) -> Bool {
 extension JiraUpdaterError: CustomStringConvertible {
     public var description: String {
         switch self {
-        case let .InvalidArgument(description):
+        case let .invalidArgument(description):
             return description
           
-        case let .InvalidTransition(description):
+        case let .invalidTransition(description):
             return description
 
-        case let .TransitionFailed(description):
+        case let .transitionFailed(description):
             return description
 
-        case let .InvalidIssue(description):
+        case let .invalidIssue(description):
             return description
             
-        case let .CommentFailed(description):
+        case let .commentFailed(description):
             return description
 
         }

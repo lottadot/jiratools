@@ -14,11 +14,11 @@ import Commandant
 import ChangelogKit
 
 /// Update Jira based on a CHANGELOG
-public struct ChangelogCommand: CommandType {
+public struct ChangelogCommand: CommandProtocol {
     public let verb = "changelog"
     public let function = "Update Jira tickets from a Changelog"
     
-    public struct Options: OptionsType {
+    public struct Options: OptionsProtocol {
         public let endpoint: String
         public let username: String
         public let password: String
@@ -26,12 +26,12 @@ public struct ChangelogCommand: CommandType {
         public let comment: String
         public let file: String?
         
-        public static func create(endpoint: String)
-            -> (username: String)
-            -> (password: String)
-            -> (transitionname: String)
-            -> (comment: String)
-            -> (file: String?)
+        public static func create(_ endpoint: String)
+            -> (_ username: String)
+            -> (_ password: String)
+            -> (_ transitionname: String)
+            -> (_ comment: String)
+            -> (_ file: String?)
             -> Options {
                 return { username in { password in { transitionname in { comment in { file in
                     return self.init(endpoint: endpoint,
@@ -43,9 +43,9 @@ public struct ChangelogCommand: CommandType {
                     } } } } }
         }
         
-        public static func evaluate(m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
+        public static func evaluate(_ m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
             
-            let env = NSProcessInfo().environment
+            let env = ProcessInfo().environment
             let endPointDefault = env["JIRAUPDATER_ENDPOINT"] ?? ""
             let userDefault = env["JIRAUPDATER_USERNAME"] ?? ""
             let passwordDefault = env["JIRAUPDATER_PASSWORD"] ?? ""
@@ -66,52 +66,52 @@ public struct ChangelogCommand: CommandType {
         }
     }
     
-    public func run(options: Options) -> Result<(), JiraUpdaterError> {
+    public func run(_ options: Options) -> Result<(), JiraUpdaterError> {
         
-        guard let url:String = options.endpoint,
-            let user:String  = options.username,
-            let pass:String  = options.password,
-            let issueTransitionName:String  = options.transitionname,
+        guard
             let file:String = options.file,
-            let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass),
-            let comment:String = options.comment
-            where !options.endpoint.isEmpty
+                !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
                 && !options.transitionname.isEmpty
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, changelog and transitionname are required"))
+                return .failure(.invalidArgument(description: "Missing values: endpoint, username, password, changelog and transitionname are required"))
         }
+        
+        let comment:String = options.comment
+        let url:String = options.endpoint
+        let user:String  = options.username
+        let pass:String  = options.password
+        let issueTransitionName:String  = options.transitionname
+        let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
         
         let runLoop = CFRunLoopGetCurrent()
 
         do {
-            let path = NSURL(fileURLWithPath: file)
-            let text = try NSString(contentsOfURL: path, encoding: NSUTF8StringEncoding) as String
-            var lines:[String] = []
-            text.enumerateLines { lines.append($0.line)}
+            let path = URL(fileURLWithPath: file)
+            //let text = try String(contentsOf: path)
+            let text = try String(contentsOf: path, encoding: .utf8)
+            let lines = self.getChangelogLines(text: text)
+            let log:ChangelogAnalyzer = ChangelogAnalyzer(changelog: lines)
             
-            guard
-                let log:ChangelogAnalyzer = ChangelogAnalyzer(changelog: lines),
-                let versionString:String = log.buildVersionString(),
+            guard let versionString:String = log.buildVersionString(),
                 let buildNumber:UInt = log.buildNumber(),
-                let buildNumberString:String = String(buildNumber),
-                let postableComment:String = self.untemplateComment(comment, version: versionString, buildNumber: buildNumberString),
-                let tickets:[String] = log.tickets(),
-                let issueids:[String] = self.ticketIdsForTickets(tickets)
-                where !log.isTBD() && !tickets.isEmpty else {
-                return .Failure(.InvalidArgument(description: "Changelog has no date, is TBD or has no Jira Issue Identifiers"))
+                let tickets = log.tickets(),
+                let issueids:[String] = self.ticketIdsForTickets(tickets),
+                !log.isTBD() && !tickets.isEmpty && !issueids.isEmpty else {
+                    
+                        print(JiraUpdaterError.invalidIssue(description: "Issue Identifier(s) must provided. Use --issueids or --issueid.").description)
+                        return .failure(.invalidArgument(description: "Changelog has no date, is TBD or has no Jira Issue Identifiers"))
+                        //exit(EXIT_FAILURE)
             }
 
-            if issueids.isEmpty {
-                print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier(s) must provided. Use --issueids or --issueid.").description)
-                exit(EXIT_FAILURE)
-            }
-            
+            let buildNumberString:String = String(buildNumber)
+            let postableComment:String = self.untemplateComment(comment, version: versionString, buildNumber: buildNumberString)
+
             for identifier in issueids {
                 
                 guard identifier.characters.count > 0 else {
-                    print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
+                    print(JiraUpdaterError.invalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
                     exit(EXIT_FAILURE)
                 }
                 
@@ -120,9 +120,9 @@ public struct ChangelogCommand: CommandType {
                     if !result.success {
                         
                         if let error = result.error {
-                            print(JiraUpdaterError.CommentFailed(description: error.description).description)
+                            print(JiraUpdaterError.commentFailed(description: error.description).description)
                         } else {
-                            print(JiraUpdaterError.TransitionFailed(description: "Update of Issue '\(identifier)' failed").description)
+                            print(JiraUpdaterError.transitionFailed(description: "Update of Issue '\(identifier)' failed").description)
                         }
                         
                         CFRunLoopStop(runLoop)
@@ -134,9 +134,9 @@ public struct ChangelogCommand: CommandType {
                                 if !result.success {
                                     
                                     if let error = result.error {
-                                        print(JiraUpdaterError.CommentFailed(description: error.localizedDescription).description)
+                                        print(JiraUpdaterError.commentFailed(description: error.localizedDescription).description)
                                     } else {
-                                        print(JiraUpdaterError.CommentFailed(description: "Comment on Issue '\(identifier)' failed").description)
+                                        print(JiraUpdaterError.commentFailed(description: "Comment on Issue '\(identifier)' failed").description)
                                     }
                                     exit(EXIT_FAILURE)
                                 }
@@ -150,76 +150,85 @@ public struct ChangelogCommand: CommandType {
             }
             
             CFRunLoopRun()
-            return .Success(())
+            return .success(())
             
         } catch let error as NSError {
-            return .Failure(.InvalidArgument(description: error.localizedDescription))
+            return .failure(.invalidArgument(description: error.localizedDescription))
         }
     }
     
+    /// Obtain each line from the Changelog
+    fileprivate func getChangelogLines(text: String) -> [String] {
+        var lines:[String] = []
+        text.enumerateLines{ (line, stop) -> () in
+            lines.append(line)
+        }
+        return lines
+    }
+    
     /// Obtain an Issue
-    private func getIssue(api: JTKAPIClient, issueId: String, completion: (result: JiraUpdaterResult) -> ()) {
+    fileprivate func getIssue(_ api: JTKAPIClient, issueId: String, completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
         api.getIssue(issueId) { (result) in
-            if let aIssue = result.data as? JTKIssue where result.success {
-                completion(result: JiraUpdaterResult.init(success: true, error:nil, data: aIssue))
+            if let aIssue = result.data as? JTKIssue , result.success {
+                completion(JiraUpdaterResult.init(success: true, error:nil, data: aIssue))
             } else {
-                completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+                completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
             }
         }
     }
     
     /// Obtain an Issue's Transitions with JiraUpdater
-    private func getTransitions(api: JTKAPIClient, issue: JTKIssue, completion: (result: JiraUpdaterResult) -> ()) {
+    fileprivate func getTransitions(_ api: JTKAPIClient, issue: JTKIssue, completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
         api.getIssueTransitions(issue) { (result) in
             
-            if let transitions = result.data as? [JTKTransition] where result.success {
-                completion(result: JiraUpdaterResult.init(success: true, error:nil, data: transitions))
+            if let transitions = result.data as? [JTKTransition] , result.success {
+                completion(JiraUpdaterResult.init(success: true, error:nil, data: transitions as AnyObject?))
             } else {
-                completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+                completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
             }
         }
     }
     
     /// Transition an Issue from it's current Status to another with a Transition
-    private func transitionIssue(api: JTKAPIClient, issue: JTKIssue, transition: JTKTransition, completion: (result: JiraUpdaterResult) -> ()) {
+    fileprivate func transitionIssue(_ api: JTKAPIClient, issue: JTKIssue, transition: JTKTransition, completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
         api.transitionIssue(issue, transition: transition, comment: nil) { (result) in
-            completion(result: JiraUpdaterResult.init(success: result.success, error: result.error, data: nil))
+            completion(JiraUpdaterResult.init(success: result.success, error: result.error, data: nil))
         }
     }
     
     /// A transition of a specific name in a list of Transitions
-    func transitionByName(transitions: [JTKTransition], transitionNameWanted name: String) -> JTKTransition? {
+    func transitionByName(_ transitions: [JTKTransition], transitionNameWanted name: String) -> JTKTransition? {
         return (transitions.filter { $0.name == name }).first
     }
     
     /// Update a Jira Issue with JiraUpdater
-    func updateIssue(api: JTKAPIClient, issueId: String, withTransitionNamed name: String, withComment commentBody: String?, completion: (result: JiraUpdaterResult) -> ()) {
+    func updateIssue(_ api: JTKAPIClient, issueId: String, withTransitionNamed name: String, withComment commentBody: String?, completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
         
         self.getIssue(api, issueId: issueId) { (result) in
             
-            guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
-                completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+            guard let issue:JTKIssue = result.data as? JTKIssue , result.success else {
+                completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
                 return
             }
             
             self.getTransitions(api, issue: issue, completion: { (result) in
                 
-                guard let transitions:[JTKTransition] = result.data as? [JTKTransition] where result.success else  {
-                    completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+                guard let transitions:[JTKTransition] = result.data as? [JTKTransition] , result.success else  {
+                    completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
                     return
                 }
                 
                 guard let transition:JTKTransition = self.transitionByName(transitions, transitionNameWanted: name) else {
-                    completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+                    completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
                     return
                 }
                 
                 self.transitionIssue(api, issue: issue, transition: transition, completion: { (result) in
                     
                     if !result.success {
-                        completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+                        completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
                     } else {
-                        completion(result: JiraUpdaterResult.init(success: true, error: nil, data: nil))
+                        completion(JiraUpdaterResult.init(success: true, error: nil, data: nil))
                     }
                 })
             })
@@ -227,42 +236,42 @@ public struct ChangelogCommand: CommandType {
     }
     
     /// Comment on an Issue with JiraUpdater
-    func commentIssue(api: JTKAPIClient, issueId: String, commentBody: String, completion: (result: JiraUpdaterResult) -> ()) {
+    func commentIssue(_ api: JTKAPIClient, issueId: String, commentBody: String, completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
         
         self.getIssue(api, issueId: issueId) { (result) in
-            guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
-                completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+            guard let issue:JTKIssue = result.data as? JTKIssue , result.success else {
+                completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
                 return
             }
             
             api.commentOnIssue(issue, comment: commentBody, completion: { (result) in
                 if !result.success {
-                    completion(result: JiraUpdaterResult.init(success: false, error: result.error, data: nil))
+                    completion(JiraUpdaterResult.init(success: false, error: result.error, data: nil))
                 } else {
-                    completion(result: JiraUpdaterResult.init(success: true, error: nil, data: nil))
+                    completion(JiraUpdaterResult.init(success: true, error: nil, data: nil))
                 }
                 
             })
         }
     }
     
-    func untemplateComment(templatedComment: String, version: String, buildNumber: String) -> String {
+    func untemplateComment(_ templatedComment: String, version: String, buildNumber: String) -> String {
         var parsed = templatedComment
-        parsed = parsed.stringByReplacingOccurrencesOfString("{VERSION}", withString: version, options: NSStringCompareOptions.LiteralSearch, range: nil)
-        parsed = parsed.stringByReplacingOccurrencesOfString("{BUILDNUMBER}", withString: buildNumber, options: NSStringCompareOptions.LiteralSearch, range: nil)
+        parsed = parsed.replacingOccurrences(of: "{VERSION}", with: version, options: NSString.CompareOptions.literal, range: nil)
+        parsed = parsed.replacingOccurrences(of: "{BUILDNUMBER}", with: buildNumber, options: NSString.CompareOptions.literal, range: nil)
         return parsed
     }
     
-    func ticketIdsForTickets(tickets: [String]) -> [String] {
+    func ticketIdsForTickets(_ tickets: [String]) -> [String]? {
         
         var ticketIds:[String] = []
         
-        for ticket in tickets.reverse() {
-            if let ticketId = ticket.componentsSeparatedByString(" ").first {
+        for ticket in tickets.reversed() {
+            if let ticketId = ticket.components(separatedBy: " ").first {
                 ticketIds.append(ticketId)
             }
         }
         
-        return ticketIds
+        return ticketIds.count > 1 ? ticketIds : nil
     }
 }

@@ -27,7 +27,7 @@ carthage:
 	carthage update
 
 bootstrap:
-	carthage bootstrap --platform mac --no-use-binaries
+	carthage bootstrap --platform macOS --no-use-binaries
 
 # xcodebuild -workspace JiraTools.xcworkspace -scheme jiraupdater CONFIGURATION_BUILD_DIR='build'
 build:

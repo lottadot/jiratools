@@ -13,11 +13,11 @@ import Result
 import Commandant
 
 /// The Comment Jira Ticket subcommand
-public struct CommentCommand: CommandType {
+public struct CommentCommand: CommandProtocol {
     public let verb = "comment"
     public let function = "Comment on a Jira Ticket"
     
-    public struct Options: OptionsType {
+    public struct Options: OptionsProtocol {
         public let endpoint: String
         public let username: String
         public let password: String
@@ -25,12 +25,12 @@ public struct CommentCommand: CommandType {
         public let message: String
         public let issueids: String?
         
-        public static func create(endpoint: String)
-            -> (username: String)
-            -> (password: String)
-            -> (issueid: String)
-            -> (message: String)
-            -> (issueids: String)
+        public static func create(_ endpoint: String)
+            -> (_ username: String)
+            -> (_ password: String)
+            -> (_ issueid: String)
+            -> (_ message: String)
+            -> (_ issueids: String)
             -> Options {
                 return { username in { password in { issueid in { message in { issueids in
                     return self.init(endpoint: endpoint,
@@ -42,9 +42,9 @@ public struct CommentCommand: CommandType {
                     } } } } }
         }
         
-        public static func evaluate(m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
+        public static func evaluate(_ m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
             
-            let env = NSProcessInfo().environment
+            let env = ProcessInfo().environment
             let endPointDefault = env["JIRAUPDATER_ENDPOINT"] ?? ""
             let userDefault = env["JIRAUPDATER_USERNAME"] ?? ""
             let passwordDefault = env["JIRAUPDATER_PASSWORD"] ?? ""
@@ -65,52 +65,54 @@ public struct CommentCommand: CommandType {
         }
     }
     
-    public func run(options: Options) -> Result<(), JiraUpdaterError> {
+    public func run(_ options: Options) -> Result<(), JiraUpdaterError> {
         
-        guard let url:String = options.endpoint,
-            let user:String  = options.username,
-            let pass:String  = options.password,
-            let issueIdentifier:String  = options.issueid,
-            let message:String  = options.message,
+        guard let issueIdentifier:String  = options.issueid,
             let issueIdentifiers: String = options.issueids,
-            let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
-            where !options.endpoint.isEmpty
+                !options.endpoint.isEmpty
                 && !options.username.isEmpty
                 && !options.password.isEmpty
                 && !options.message.isEmpty
                 && (!options.issueid!.isEmpty || !options.issueids!.isEmpty)
             else {
-                return .Failure(.InvalidArgument(description: "Missing values: endpoint, username, password, (issueids or issues) and transitionname are required"))
+                return .failure(.invalidArgument(description: "Missing values: endpoint, username, password, (issueids or issues) and transitionname are required"))
         }
+        
+        let url:String = options.endpoint
+        let user:String  = options.username
+        let pass:String  = options.password
+        let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
+        let message:String  = options.message
         
         let runLoop = CFRunLoopGetCurrent()
         
         var issueids:[String] = []
+        let identifiers:[String] = issueIdentifiers.components(separatedBy: ",")
         
-        if let idents:String = issueIdentifiers, let identifiers:[String] = idents.componentsSeparatedByString(",") where !identifiers.isEmpty {
+        if !identifiers.isEmpty {
             print("found: \(identifiers)")
-            issueids.appendContentsOf(identifiers)
-        } else if let oneIssueIdentifier:String = issueIdentifier where oneIssueIdentifier.characters.count > 0 {
-            issueids.append(oneIssueIdentifier)
+            issueids.append(contentsOf: identifiers)
+        } else if issueIdentifier.characters.count > 0 {
+            issueids.append(issueIdentifier)
         }
         
         if issueids.isEmpty {
-            print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier(s) must provided. Use --issueids or --issueid.").description)
+            print(JiraUpdaterError.invalidIssue(description: "Issue Identifier(s) must provided. Use --issueids or --issueid.").description)
             exit(EXIT_FAILURE)
         }
         
         for identifier in issueids {
             
             guard identifier.characters.count > 0 else {
-                print(JiraUpdaterError.InvalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
+                print(JiraUpdaterError.invalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
                 exit(EXIT_FAILURE)
             }
             
             api.getIssue(identifier) { (result) in
                 
-                guard let issue:JTKIssue = result.data as? JTKIssue where result.success else {
+                guard let issue:JTKIssue = result.data as? JTKIssue , result.success else {
                     if !result.success {
-                        print(JiraUpdaterError.InvalidIssue(description: "Issue '\(identifier)' not found").description)
+                        print(JiraUpdaterError.invalidIssue(description: "Issue '\(identifier)' not found").description)
                         exit(EXIT_FAILURE)
                     }
                     CFRunLoopStop(runLoop)
@@ -119,7 +121,7 @@ public struct CommentCommand: CommandType {
                 
                 api.commentOnIssue(issue, comment: message, completion: { (result) in
                     if !result.success {
-                        print(JiraUpdaterError.CommentFailed(description: "Comment on Issue '\(identifier)' failed").description)
+                        print(JiraUpdaterError.commentFailed(description: "Comment on Issue '\(identifier)' failed").description)
                         exit(EXIT_FAILURE)
                     }
                     CFRunLoopStop(runLoop)
@@ -129,6 +131,6 @@ public struct CommentCommand: CommandType {
         }
         
         CFRunLoopRun()
-        return .Success(())
+        return .success(())
     }
 }

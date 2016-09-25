@@ -1,4 +1,4 @@
-github "lottadot/ChangelogKit" "99b582da88fda8843bbd19802f60ca31d47abaad"
-github "lottadot/JiraToolsKit" "0.1.0"
-github "antitypical/Result" "2.1.0"
-github "Carthage/Commandant" "0.10.0"
+github "lottadot/ChangelogKit" "0.1.0"
+github "lottadot/JiraToolsKit" "0.2.0"
+github "antitypical/Result" "3.0.0"
+github "Carthage/Commandant" "0.11.1"
