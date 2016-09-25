@@ -14,7 +14,7 @@ FRAMEWORKS_FOLDER=/Library
 BINARIES_FOLDER=/usr/local/bin
 
 OUTPUT_PACKAGE=jiraupdater.pkg
-
+OUTPUT_FRAMEWORK=JiraToolsKit.framework
 VERSION_STRING=$(shell cd jiraupdater && agvtool what-marketing-version -terse1)
 COMPONENTS_PLIST=jiraupdater/jiraUpdater/Components.plist
 
@@ -41,25 +41,37 @@ test: clean bootstrap
 
 clean:
 	rm -f "$(OUTPUT_PACKAGE)"
+	rm -f "$(OUTPUT_FRAMEWORK_ZIP)"
 	rm -rf "$(TEMPORARY_FOLDER)"
 	$(BUILD_TOOL) $(XCODEFLAGS) clean
 
 install: package
 	sudo installer -pkg jiraupdater.pkg -target /
 
+uninstall:
+	rm -rf "$(FRAMEWORKS_FOLDER)/$(OUTPUT_FRAMEWORK)"
+	rm -f "$(BINARIES_FOLDER)/jiraupdater"
+
 installables: clean bootstrap
 	$(BUILD_TOOL) $(XCODEFLAGS) install
 
 	mkdir -p "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
-	mv -f "$(FRAMEWORK_BUNDLE)/" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)"
+	
+	rsync -a --prune-empty-dirs --include '*/'  --exclude '/libswift*.dylib' "$(FRAMEWORK_BUNDLE)/JiraToolsKit.framework" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks"
+
+	# copy the app's frameworks
+	rsync -a --prune-empty-dirs --include '*/'  --exclude '/libswift*.dylib /JiraToolsKit.framework' "$(FRAMEWORK_BUNDLE)/" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks/$(OUTPUT_FRAMEWORK)/Versions/Current/Frameworks"
+	
+	
+
 	mv -fv "$(EXECUTABLE)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/jiraupdater"
 	rm -rf "$(BUILT_BUNDLE)"
 
 prefix_install: installables
 	mkdir -p "$(PREFIX)/Frameworks" "$(PREFIX)/bin"
-	cp -rf "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)" "$(PREFIX)/Frameworks/"
 	cp -f "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/jiraupdater" "$(PREFIX)/bin/"
 	install_name_tool -add_rpath "@executable_path/../Frameworks/JiraToolsKit.framework/Versions/Current/Frameworks/" "$(PREFIX)/bin/jiraupdater"
+
 
 package: installables
 	pkgbuild \
