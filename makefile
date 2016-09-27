@@ -50,6 +50,7 @@ install: package
 
 uninstall:
 	rm -rf "$(FRAMEWORKS_FOLDER)/$(OUTPUT_FRAMEWORK)"
+	rm -rf "$(PREFIX)/Frameworks/$(OUTPUT_FRAMEWORK)"
 	rm -f "$(BINARIES_FOLDER)/jiraupdater"
 
 installables: clean bootstrap
