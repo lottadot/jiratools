@@ -142,13 +142,21 @@ If you would like to try this but are hesitant to run it against your production
 * [Atlassian Developers Homepage](https://developer.atlassian.com/index.html)
 * [JIRA](https://www.atlassian.com/software/jira)
 
-#### Get started
+#### Get started - Installation
+
+You have a number of choices for installation (we recommend the homebrew method):
 
 ##### From Source into /usr/local/bin
 ```
 git clone https://github.com/lottadot/jiratools.git
 cd jiratools
 make prefix_install
+```
+##### From a package into /usr/local/bin
+```
+git clone https://github.com/lottadot/jiratools.git
+cd jiratools
+make install
 ```
 
 ##### Homebrew Tap
