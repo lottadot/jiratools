@@ -15,6 +15,7 @@ BINARIES_FOLDER=/usr/local/bin
 
 OUTPUT_PACKAGE=jiraupdater.pkg
 OUTPUT_FRAMEWORK=JiraToolsKit.framework
+
 VERSION_STRING=$(shell cd jiraupdater && agvtool what-marketing-version -terse1)
 COMPONENTS_PLIST=jiraupdater/jiraUpdater/Components.plist
 
@@ -63,17 +64,15 @@ installables: clean bootstrap
 
 	# copy the app's frameworks into the "JiraToolsKit Framework" *Frameworks directory* that we put into the destination Frameworks directory.
 	rsync -a --prune-empty-dirs --include '*/'  --exclude '/libswift*.dylib /JiraToolsKit.framework' "$(FRAMEWORK_BUNDLE)/" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks/$(OUTPUT_FRAMEWORK)/Versions/Current/Frameworks"
-	
-	
 
 	mv -fv "$(EXECUTABLE)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/jiraupdater"
 	rm -rf "$(BUILT_BUNDLE)"
 
 prefix_install: installables
 	mkdir -p "$(PREFIX)/Frameworks" "$(PREFIX)/bin"
+	cp -Rf "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks/$(OUTPUT_FRAMEWORK)" "$(PREFIX)/Frameworks/"
 	cp -f "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/jiraupdater" "$(PREFIX)/bin/"
-	install_name_tool -add_rpath "@executable_path/../Frameworks/JiraToolsKit.framework/Versions/Current/Frameworks/" "$(PREFIX)/bin/jiraupdater"
-
+	install_name_tool -add_rpath "@executable_path/../Frameworks/$(OUTPUT_FRAMEWORK)/Versions/Current/Frameworks/" "$(PREFIX)/bin/jiraupdater"
 
 package: installables
 	pkgbuild \
@@ -83,3 +82,5 @@ package: installables
 		--root "$(TEMPORARY_FOLDER)" \
 		--version "$(VERSION_STRING)" \
 		"$(OUTPUT_PACKAGE)"
+
+
