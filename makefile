@@ -58,9 +58,10 @@ installables: clean bootstrap
 
 	mkdir -p "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
 	
+	# copy our JiraToolsKit Framework into the destination Frameworks directory.
 	rsync -a --prune-empty-dirs --include '*/'  --exclude '/libswift*.dylib' "$(FRAMEWORK_BUNDLE)/JiraToolsKit.framework" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks"
 
-	# copy the app's frameworks
+	# copy the app's frameworks into the "JiraToolsKit Framework" *Frameworks directory* that we put into the destination Frameworks directory.
 	rsync -a --prune-empty-dirs --include '*/'  --exclude '/libswift*.dylib /JiraToolsKit.framework' "$(FRAMEWORK_BUNDLE)/" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Frameworks/$(OUTPUT_FRAMEWORK)/Versions/Current/Frameworks"
 	
 	
