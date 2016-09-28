@@ -267,11 +267,12 @@ public struct ChangelogCommand: CommandProtocol {
         var ticketIds:[String] = []
         
         for ticket in tickets.reversed() {
-            if let ticketId = ticket.components(separatedBy: " ").first {
+            if let ticketId = ticket.components(separatedBy: " ").first, !ticket.isEmpty {
                 ticketIds.append(ticketId)
             }
         }
         
         return ticketIds.count > 1 ? ticketIds : nil
+        return ticketIds.count > 0 ? ticketIds : nil
     }
 }
