@@ -44,19 +44,15 @@ public struct ChangelogCommand: CommandProtocol {
         }
         
         public static func evaluate(_ m: CommandMode) -> Result<Options, CommandantError<JiraUpdaterError>> {
-            
-            let env = ProcessInfo().environment
-            let endPointDefault = env["JIRAUPDATER_ENDPOINT"] ?? ""
-            let userDefault = env["JIRAUPDATER_USERNAME"] ?? ""
-            let passwordDefault = env["JIRAUPDATER_PASSWORD"] ?? ""
+
             
             return create
-                <*> m <| Option(key: "endpoint", defaultValue: endPointDefault,
+                <*> m <| Option(key: "endpoint", defaultValue: "",
                                 usage: "the JIRA API EndPoint URL ie http://jira.example.com/")
                 <*> m <| Option(key: "username",
-                                defaultValue: userDefault, usage: "the username to authenticate with")
+                                defaultValue: "", usage: "the username to authenticate with")
                 <*> m <| Option(key: "password",
-                                defaultValue: passwordDefault, usage: "the password to authenticate with")
+                                defaultValue: "", usage: "the password to authenticate with")
                 <*> m <| Option(key: "transitionname",
                                 defaultValue: "", usage: "the Jira Transition to apply ie 'QA Ready'")
                 <*> m <| Option(key: "comment",
@@ -68,20 +64,26 @@ public struct ChangelogCommand: CommandProtocol {
     
     public func run(_ options: Options) -> Result<(), JiraUpdaterError> {
         
-        guard
-            let file:String = options.file,
-                !options.endpoint.isEmpty
-                && !options.username.isEmpty
-                && !options.password.isEmpty
-                && !options.transitionname.isEmpty
+        let env = ProcessInfo().environment
+        let endPointDefault:String? = env["JIRAUPDATER_ENDPOINT"]
+        let userDefault:String? = env["JIRAUPDATER_USERNAME"]
+        let passwordDefault:String? = env["JIRAUPDATER_PASSWORD"]
+        
+        let comment:String = options.comment
+        let url:String = endPointDefault ?? options.endpoint
+        let user:String  = userDefault ?? options.username
+        let pass:String  = passwordDefault ?? options.password
+        let file:String = options.file ?? "CHANGELOG"
+        
+        guard !file.isEmpty
+                && !user.isEmpty
+                && !pass.isEmpty
+                && !url.isEmpty
             else {
                 return .failure(.invalidArgument(description: "Missing values: endpoint, username, password, changelog and transitionname are required"))
         }
         
-        let comment:String = options.comment
-        let url:String = options.endpoint
-        let user:String  = options.username
-        let pass:String  = options.password
+        
         let issueTransitionName:String  = options.transitionname
         let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
         
