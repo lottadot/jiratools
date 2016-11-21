@@ -107,6 +107,11 @@ public struct ChangelogCommand: CommandProtocol {
 
             let buildNumberString:String = String(buildNumber)
             let postableComment:String = self.untemplateComment(comment, version: versionString, buildNumber: buildNumberString)
+            
+            guard !postableComment.isEmpty else {
+                print(JiraUpdaterError.invalidComment(description: "Changelog updating requires postable comment text").description)
+                exit(EXIT_FAILURE)
+            }
 
             for identifier in issueids {
                 

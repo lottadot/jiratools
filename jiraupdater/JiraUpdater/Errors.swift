@@ -23,6 +23,9 @@ public enum JiraUpdaterError: Error, Equatable {
     /// Issue not found
     case invalidIssue(description: String)
     
+    /// Invalid Comment
+    case invalidComment(description: String)
+    
     /// Comment Failed
     case commentFailed(description: String)
 }
@@ -50,6 +53,9 @@ extension JiraUpdaterError: CustomStringConvertible {
             return description
 
         case let .invalidIssue(description):
+            return description
+            
+        case let .invalidComment(description):
             return description
             
         case let .commentFailed(description):
