@@ -85,8 +85,6 @@ public struct ChangelogCommand: CommandProtocol {
         let issueTransitionName:String  = options.transitionname
         let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
         
-        let runLoop = CFRunLoopGetCurrent()
-
         do {
             let path = URL(fileURLWithPath: file)
             //let text = try String(contentsOf: path)
@@ -113,52 +111,84 @@ public struct ChangelogCommand: CommandProtocol {
                 exit(EXIT_FAILURE)
             }
 
-            for identifier in issueids {
+            
+            let runLoop = CFRunLoopGetCurrent()
+            
+            self.performChangeLog(ids: issueids, comment: postableComment, apiClient: api, transitionName: issueTransitionName, completion: { (result) in
+
+                CFRunLoopStop(runLoop)
+            })
                 
-                guard identifier.characters.count > 0 else {
-                    print(JiraUpdaterError.invalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
-                    exit(EXIT_FAILURE)
-                }
+            CFRunLoopRun()
+            return .success(())
+        } catch let error as NSError {
+            return .failure(.invalidArgument(description: error.localizedDescription))
+        }
+    }
+    
+    /// Performs the actions on tickets based off Changelog information.
+    ///
+    /// We deem success upon all ticket updates and comment posting successfull completion.
+    ///
+    /// - Parameters:
+    ///   - ids: Array of the Ticket Identifiers
+    ///   - comment: The text of the comment to post.
+    ///   - api: The API Client to use.
+    ///   - transition: The name of the Transition to apply to each ticket.
+    ///   - completion: The completion block to execute.
+    fileprivate func performChangeLog(ids: [String], comment: String, apiClient api: JTKAPIClient, transitionName transition: String,  completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
+        
+        // Tracks failure count. We deem success upon all ticket updates and comment posting successfull completion.
+        var failures = 0
+        
+        //let queue = DispatchQueue(label: "com.lottadot.jiraupdater.changelog.dispatchgroup", attributes: .concurrent, target: .main)
+        let queue = DispatchQueue(label: "com.lottadot.jiraupdater.changelog.dispatchgroup.serial")
+        let group = DispatchGroup()
+        
+        for identifier in ids {
+            
+            guard identifier.characters.count > 2 else {
+                print(JiraUpdaterError.invalidIssue(description: "Issue Identifier must be greater then zero characters in length").description)
+                continue
+            }
+
+            group.enter()
+            queue.async(group: group) {
                 
-                self.updateIssue(api, issueId: identifier, withTransitionNamed: issueTransitionName, withComment: nil) { (result) in
+                self.updateIssue(api, issueId: identifier, withTransitionNamed: transition, withComment: nil) { (result) in
                     
                     if !result.success {
-                        
+                        failures = failures + 1
                         if let error = result.error {
                             print(JiraUpdaterError.commentFailed(description: error.description).description)
                         } else {
                             print(JiraUpdaterError.transitionFailed(description: "Update of Issue '\(identifier)' failed").description)
                         }
+                        group.leave()
                         
-                        CFRunLoopStop(runLoop)
-                        exit(EXIT_FAILURE)
                     } else {
                         
-                        if !postableComment.isEmpty {
-                            self.commentIssue(api, issueId: identifier, commentBody: postableComment, completion: { (result) in
-                                if !result.success {
-                                    
-                                    if let error = result.error {
-                                        print(JiraUpdaterError.commentFailed(description: error.localizedDescription).description)
-                                    } else {
-                                        print(JiraUpdaterError.commentFailed(description: "Comment on Issue '\(identifier)' failed").description)
-                                    }
-                                    exit(EXIT_FAILURE)
+                        
+                        self.commentIssue(api, issueId: identifier, commentBody: comment, completion: { (result) in
+                            
+                            if !result.success {
+                                failures = failures + 1
+                                print("Commented FAIL\(identifier)")
+                                if let error = result.error {
+                                    print(JiraUpdaterError.commentFailed(description: error.localizedDescription).description)
+                                } else {
+                                    print(JiraUpdaterError.commentFailed(description: "Comment on Issue '\(identifier)' failed").description)
                                 }
-                                CFRunLoopStop(runLoop)
-                            })
-                        } else {
-                            CFRunLoopStop(runLoop)
-                        }
+                            }
+                            group.leave()
+                        })
                     }
                 }
             }
-            
-            CFRunLoopRun()
-            return .success(())
-            
-        } catch let error as NSError {
-            return .failure(.invalidArgument(description: error.localizedDescription))
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            completion(JiraUpdaterResult.init(success: (failures == 0), error: nil, data: nil))
         }
     }
     
