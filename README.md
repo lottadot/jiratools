@@ -134,6 +134,12 @@ export JIRAUPDATER_PASSWORD=yourpassword
 
 ##### Trial Jira Instance
 
+###### The new Cloud way
+
+Jira will now create a development instance for you in the cloud. I highly recommend this method: [Jira Cloud Development Environment Information](https://developer.atlassian.com/blog/2016/04/cloud-ecosystem-dev-env/).
+
+###### The old local way
+
 If you would like to try this but are hesitant to run it against your production `JIRA` instance, you can run a local development instance of `Jira` fairly easily. Follow the directions in the [JiraLottadotTools](https://github.com/lottadot/JiraLottadotTools) project.
 
 ###### Resources
