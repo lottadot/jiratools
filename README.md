@@ -21,7 +21,7 @@ I created this to use it in our CI Environment. And also, possibly in the future
  jiraupdater help
 Available commands:
 
-   changelog   Update Jira tickets from a Changelog
+   changelog   Update Jira tickets from a Changelog file. Default filename 'CHANGELOG'
    comment     Comment on a Jira Ticket
    help        Display general or command-specific help
    update      Update a Jira Ticket
