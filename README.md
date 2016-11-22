@@ -9,7 +9,7 @@ This repo will contain a collection of tiny useful tools for Jira and CI. As of 
 
 #### Description 
 
-A macOS command line program to change the status of a [JIRA](https://www.atlassian.com/software/jira) ticket (and optionally post a comment to the ticket).
+A macOS command line program to change the status of [JIRA](https://www.atlassian.com/software/jira) ticket(s) (and optionally post a comment to the ticket).
 
 #### Why?
 
