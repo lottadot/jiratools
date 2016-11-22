@@ -67,20 +67,23 @@ public struct CommentCommand: CommandProtocol {
     
     public func run(_ options: Options) -> Result<(), JiraUpdaterError> {
         
-        guard let issueIdentifier:String  = options.issueid,
-            let issueIdentifiers: String = options.issueids,
-                !options.endpoint.isEmpty
-                && !options.username.isEmpty
-                && !options.password.isEmpty
-                && !options.message.isEmpty
-                && (!options.issueid!.isEmpty || !options.issueids!.isEmpty)
-            else {
-                return .failure(.invalidArgument(description: "Missing values: endpoint, username, password, (issueids or issues) and transitionname are required"))
+        let env = ProcessInfo().environment
+        let endPointDefault:String? = env["JIRAUPDATER_ENDPOINT"]
+        let userDefault:String? = env["JIRAUPDATER_USERNAME"]
+        let passwordDefault:String? = env["JIRAUPDATER_PASSWORD"]
+        
+        let url:String = endPointDefault ?? options.endpoint
+        let user:String  = userDefault ?? options.username
+        let pass:String  = passwordDefault ?? options.password
+        
+        guard !user.isEmpty, !pass.isEmpty, !url.isEmpty else {
+            return .failure(.invalidArgument(description: "Missing values: endpoint, username, password, changelog and transitionname are required"))
         }
         
-        let url:String = options.endpoint
-        let user:String  = options.username
-        let pass:String  = options.password
+        guard let issueIdentifier:String  = options.issueid, let issueIdentifiers: String = options.issueids, !options.message.isEmpty, (!options.issueid!.isEmpty || !options.issueids!.isEmpty) else {
+                return .failure(.invalidArgument(description: "Missing values: Issue Information (issueids or issues), comment and transitionname are required"))
+        }
+        
         let api:JTKAPIClient = JTKAPIClient.init(endpointUrl: url, username: user, password: pass)
         let message:String  = options.message
         
