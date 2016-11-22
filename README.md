@@ -114,6 +114,12 @@ or if you're providing Jira Endpoint information via environment variables:
 jiraupdater changelog --comment "Ready for QA in v2.1 build #10"
 ```
 
+or, at it's *most simplest* let it build the comment text for you based on the version/build information in the `CHANGELOG` file:
+
+```
+jiraupdater changelog
+```
+
 ##### Security
 
 As a convenience (ie you'd like to use this in a CI setup, etc), you can alternatively provide the URL, username and password via environment variables:
