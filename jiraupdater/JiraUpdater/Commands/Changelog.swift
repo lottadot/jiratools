@@ -54,7 +54,7 @@ public struct ChangelogCommand: CommandProtocol {
                 <*> m <| Option(key: "password",
                                 defaultValue: "", usage: "the password to authenticate with")
                 <*> m <| Option(key: "transitionname",
-                                defaultValue: "", usage: "the Jira Transition to apply ie 'QA Ready'")
+                                defaultValue: "QA Ready", usage: "the Jira Transition to apply ie 'QA Ready'")
                 <*> m <| Option(key: "comment",
                                 defaultValue: "Ready for QA in {VERSION} #{BUILDNUMBER}.", usage: "the templated ({VERSION}, {BUILDNUMBER}) comment to post to the issue. Optional.")
                 <*> m <| Option(key: "file",
@@ -113,6 +113,10 @@ public struct ChangelogCommand: CommandProtocol {
                 exit(EXIT_FAILURE)
             }
 
+            guard !issueTransitionName.isEmpty else {
+                print(JiraUpdaterError.invalidComment(description: "Changelog updating requires transition name").description)
+                exit(EXIT_FAILURE)
+            }
             
             let runLoop = CFRunLoopGetCurrent()
             
