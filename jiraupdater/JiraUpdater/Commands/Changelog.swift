@@ -144,6 +144,12 @@ public struct ChangelogCommand: CommandProtocol {
     ///   - completion: The completion block to execute.
     fileprivate func performChangeLog(ids: [String], comment: String, apiClient api: JTKAPIClient, transitionName transition: String,  completion: @escaping (_ result: JiraUpdaterResult) -> ()) {
         
+        guard !comment.isEmpty, !transition.isEmpty, !ids.isEmpty else {
+            print("performChangeLog requires transition (\transition) comment:\(comment) and ids:\(ids)")
+            completion(JiraUpdaterResult.init(success: false, error: nil, data: nil))
+            return
+        }
+        
         // Tracks failure count. We deem success upon all ticket updates and comment posting successfull completion.
         var failures = 0
         
