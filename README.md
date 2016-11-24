@@ -138,7 +138,7 @@ export JIRAUPDATER_PASSWORD=yourpassword
 1. consider changing the setup, or 
 2. don't use `--comment` with `update`. Instead post the comment with `comment` command alone.
 
-We have tested this against Jira versions up to `1000.552.6` build number `100018` build revision `e2f2197b6871d3361a4e256e981b8b6c4e00960b` (you can view that information in your cloud host with this URL `https://example.atlassian.net/secure/admin/ViewSystemInfo.jspa`.
+As of version `0.3.4`, we have tested this against Jira versions up to `1000.552.6` build number `100018` build revision `e2f2197b6871d3361a4e256e981b8b6c4e00960b` (you can view that information in your cloud host with this URL `https://example.atlassian.net/secure/admin/ViewSystemInfo.jspa`.
 
 ##### Trial Jira Instance
 

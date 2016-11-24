@@ -12,7 +12,7 @@ import JiraToolsKit
 import Result
 import Commandant
 
-private let version = "0.3.3" // FIXME. See TODO below.
+private let version = "0.3.4" // FIXME. See TODO below.
 
 /// Provide the Version of JiraUpdater
 public struct VersionCommand: CommandProtocol {
