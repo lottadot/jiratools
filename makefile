@@ -3,13 +3,9 @@ PREFIX?=/usr/local
 BUILD_TOOL?=xcodebuild
 
 XCODEFLAGS=-workspace 'JiraTools.xcworkspace' -scheme 'jiraupdater' DSTROOT=$(TEMPORARY_FOLDER) 
-#CONFIGURATION_BUILD_DIR=$(TEMPORARY_FOLDER) CONFIGURATION_TEMP_DIR=$(TEMPORARY_FOLDER)
-
-
 BUILT_BUNDLE=$(TEMPORARY_FOLDER)/Applications/jiraupdater.app
 FRAMEWORK_BUNDLE=$(BUILT_BUNDLE)/Contents/Frameworks
 EXECUTABLE=$(BUILT_BUNDLE)/Contents/MacOS/jiraupdater
-
 FRAMEWORKS_FOLDER=/Library
 BINARIES_FOLDER=/usr/local/bin
 
