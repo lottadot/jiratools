@@ -309,6 +309,10 @@ public struct ChangelogCommand: CommandProtocol {
         return parsed
     }
     
+    /// Build a list of Ticket ID's from Issue line text from a changelog.
+    ///
+    /// - Parameter tickets: An array of strings representing the Issue lines from the file.
+    /// - Returns: An array of the Ticket ID's (id SDK-123) or nil if none.
     func ticketIdsForTickets(_ tickets: [String]) -> [String]? {
         
         var ticketIds:[String] = []
@@ -319,7 +323,6 @@ public struct ChangelogCommand: CommandProtocol {
             }
         }
         
-        return ticketIds.count > 1 ? ticketIds : nil
         return ticketIds.count > 0 ? ticketIds : nil
     }
 }
